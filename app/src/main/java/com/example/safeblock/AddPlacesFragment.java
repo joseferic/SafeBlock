@@ -1,6 +1,7 @@
 package com.example.safeblock;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -43,6 +44,7 @@ public class AddPlacesFragment extends Fragment  implements OnMapReadyCallback {
     private FusedLocationProviderClient fusedLocationProviderClient;
 
     private GoogleMap mMap;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -58,6 +60,9 @@ public class AddPlacesFragment extends Fragment  implements OnMapReadyCallback {
     }
 
 
+
+
+    @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
@@ -69,19 +74,6 @@ public class AddPlacesFragment extends Fragment  implements OnMapReadyCallback {
                 mMap.setMyLocationEnabled(true);
             }
         }
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-
-        }
-
-
 
 //        // Add a marker in Sydney and move the camera
 //        LatLng sydney = new LatLng(-34, 151);
@@ -130,7 +122,7 @@ public class AddPlacesFragment extends Fragment  implements OnMapReadyCallback {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
         try {
             if (mLocationPermissionGranted){
-                Task location = fusedLocationProviderClient.getLastLocation();
+                @SuppressLint("MissingPermission") Task location = fusedLocationProviderClient.getLastLocation();
                 location.addOnCompleteListener(new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
