@@ -56,7 +56,7 @@ dependencies {
 // Older versions e.g. 2.2 may also work if you need support for older Android versions.
     implementation 'com.google.zxing:core:3.0.1'
 
-    implementation 'com.google.android.gms:play-services-location:19.0.1'
+
     implementation 'com.google.android.gms:play-services-location:17.0.0'
 
     implementation ('eu.livotov.labs.android:CAMView:2.0.1@aar') {transitive=true}

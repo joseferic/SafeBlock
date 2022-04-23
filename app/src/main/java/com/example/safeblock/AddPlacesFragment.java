@@ -2,8 +2,11 @@ package com.example.safeblock;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +14,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.os.Looper;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +24,9 @@ import android.widget.Toast;
 
 import com.example.safeblock.databinding.FragmentAddPlacesBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -30,8 +38,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 
-public class AddPlacesFragment extends Fragment  implements OnMapReadyCallback {
-
+public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
 
 
     private static final String TAG = "AddPlacesFragment";
@@ -41,25 +48,22 @@ public class AddPlacesFragment extends Fragment  implements OnMapReadyCallback {
     private static final float DEFAULT_ZOOM = 15f;
 
     private Boolean mLocationPermissionGranted = false;
-    private FusedLocationProviderClient fusedLocationProviderClient;
 
     private GoogleMap mMap;
+
+    FusedLocationProviderClient client;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        //val mapFragment = childFragmentManager.findFragmentById(binding.map.id) as SupportMapFragment;
-       // val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-        //SupportMapFragment mapFragment = (SupportMapFragment) childFragmentManager.findFragmentById(binding.map.getId());
-
-        View view = inflater.inflate(R.layout.fragment_add_places,container,false);
+        View view = inflater.inflate(R.layout.fragment_add_places, container, false);
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        // Initialize location client
+        client = LocationServices.getFusedLocationProviderClient(getActivity());
+
         mapFragment.getMapAsync(this);
         return view;
     }
-
-
 
 
     @SuppressLint("MissingPermission")
@@ -67,20 +71,14 @@ public class AddPlacesFragment extends Fragment  implements OnMapReadyCallback {
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
         getLocationPermission();
-        getDeviceLocation();
-        if (ContextCompat.checkSelfPermission(getContext(),FINE_LOCATION) ==PackageManager.PERMISSION_GRANTED) {
+
+        if (ContextCompat.checkSelfPermission(getContext(), FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             if (ContextCompat.checkSelfPermission(getContext(), COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 Log.d(TAG, "HILU");
                 mMap.setMyLocationEnabled(true);
             }
         }
 
-//        // Add a marker in Sydney and move the camera
-//        LatLng sydney = new LatLng(-34, 151);
-//        mMap.addMarker(new MarkerOptions()
-//                .position(sydney)
-//                .title("Marker in Sydney"));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(@NonNull LatLng latLng) {
@@ -97,7 +95,7 @@ public class AddPlacesFragment extends Fragment  implements OnMapReadyCallback {
                 mMap.clear();
 
                 //Zoom marker
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,10));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM));
 
                 //Add marker
                 mMap.addMarker(markerOptions);
@@ -105,45 +103,130 @@ public class AddPlacesFragment extends Fragment  implements OnMapReadyCallback {
         });
     }
 
-    private void getLocationPermission(){
+    private void getLocationPermission() {
         Log.d(TAG, "getLocationPermission()");
-        String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION};
-        if (ContextCompat.checkSelfPermission(getContext(),FINE_LOCATION) ==PackageManager.PERMISSION_GRANTED){
-            if (ContextCompat.checkSelfPermission(getContext(),COURSE_LOCATION) ==PackageManager.PERMISSION_GRANTED){
+        String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+        if (ContextCompat.checkSelfPermission(getContext(), FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(getContext(), COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 mLocationPermissionGranted = true;
-            }else{
-                ActivityCompat.requestPermissions(getActivity(),permissions,LOCATION_PERMISSION_REQUEST_CODE);
+            } else {
+                ActivityCompat.requestPermissions(getActivity(), permissions, LOCATION_PERMISSION_REQUEST_CODE);
             }
         }
     }
 
-    private void getDeviceLocation(){
-        Log.d(TAG,"getDeviceLocation");
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
-        try {
-            if (mLocationPermissionGranted){
-                @SuppressLint("MissingPermission") Task location = fusedLocationProviderClient.getLastLocation();
-                location.addOnCompleteListener(new OnCompleteListener() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        if (task.isSuccessful()){
-                            Log.d(TAG,"onCompleted found location!");
-                            Location currentLocation = (Location) task.getResult();
-                            moveCamera(new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude()),DEFAULT_ZOOM);
-                        }else{
-                            Log.d(TAG,"onCompleted location null");
-                            Toast.makeText(getContext(),"Location Not Found",Toast.LENGTH_SHORT).show();
+    private void moveCamera(LatLng latLng, float zoom) {
+        Log.d(TAG, "moveCamera to: lat:" + latLng.latitude + " + long:" + latLng.longitude);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions,
+            @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(
+                requestCode, permissions, grantResults);
+        // Check condition
+        if (requestCode == 100 && (grantResults.length > 0)
+                && (grantResults[0] + grantResults[1]
+                == PackageManager.PERMISSION_GRANTED)) {
+            // When permission are granted
+            // Call  method
+            getCurrentLocation();
+        } else {
+            // When permission are denied
+            // Display toast
+            Toast
+                    .makeText(getActivity(),
+                            "Permission denied",
+                            Toast.LENGTH_SHORT)
+                    .show();
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void getCurrentLocation() {
+        // Initialize Location manager
+        LocationManager locationManager
+                = (LocationManager) getActivity()
+                .getSystemService(
+                        Context.LOCATION_SERVICE);
+        // Check condition
+        if (locationManager.isProviderEnabled(
+                LocationManager.GPS_PROVIDER)
+                || locationManager.isProviderEnabled(
+                LocationManager.NETWORK_PROVIDER)) {
+            // When location service is enabled
+            // Get last location
+            client.getLastLocation().addOnCompleteListener(
+                    new OnCompleteListener<Location>() {
+                        @Override
+                        public void onComplete(
+                                @NonNull Task<Location> task) {
+
+                            // Initialize location
+                            Location location
+                                    = task.getResult();
+                            // Check condition
+                            if (location != null) {
+                                // When location result is not null
+                                // set latitude
+                                Log.d(TAG, String.valueOf(location.getLatitude()));
+                                // set longitude
+                                Log.d(TAG, String.valueOf(location.getLongitude()));
+                                moveCamera(new LatLng(location.getLatitude(),location.getLongitude()),DEFAULT_ZOOM);
+                            } else {
+                                // When location result is null
+                                // initialize location request
+                                LocationRequest locationRequest
+                                        = new LocationRequest()
+                                        .setPriority(
+                                                LocationRequest
+                                                        .PRIORITY_HIGH_ACCURACY)
+                                        .setInterval(10000)
+                                        .setFastestInterval(
+                                                1000)
+                                        .setNumUpdates(1);
+
+                                // Initialize location call back
+                                LocationCallback
+                                        locationCallback
+                                        = new LocationCallback() {
+                                    @Override
+                                    public void
+                                    onLocationResult(
+                                            LocationResult
+                                                    locationResult) {
+                                        // Initialize
+                                        // location
+                                        Location location1
+                                                = locationResult
+                                                .getLastLocation();
+                                        // Set latitude
+                                        Log.d(TAG, String.valueOf(location.getLatitude()));
+                                        // Set longitude
+                                        Log.d(TAG, String.valueOf(location.getLongitude()));
+                                    }
+                                };
+
+                                // Request location updates
+                                client.requestLocationUpdates(
+                                        locationRequest,
+                                        locationCallback,
+                                        Looper.myLooper());
+                            }
                         }
-                    }
-                });
-            }
-        }catch (SecurityException e){
-            Log.e(TAG,"getDeviceLocation: Security Exception"+e.getMessage());
+                    });
+        } else {
+            // When location service is not enabled
+            // open location setting
+            startActivity(
+                    new Intent(
+                            Settings
+                                    .ACTION_LOCATION_SOURCE_SETTINGS)
+                            .setFlags(
+                                    Intent.FLAG_ACTIVITY_NEW_TASK));
         }
-    }
-
-    private void moveCamera(LatLng latLng, float zoom){
-        Log.d(TAG,"moveCamera to: lat:" + latLng.latitude + " + long:" + latLng.longitude);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,zoom));
     }
 }
