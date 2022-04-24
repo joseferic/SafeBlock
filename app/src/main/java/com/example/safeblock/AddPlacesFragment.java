@@ -5,6 +5,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -17,9 +19,13 @@ import androidx.fragment.app.Fragment;
 import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.safeblock.databinding.FragmentAddPlacesBinding;
@@ -37,6 +43,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
 
@@ -52,6 +62,8 @@ public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
 
     FusedLocationProviderClient client;
+    //widgets
+    private EditText mSearchText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,6 +75,40 @@ public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
 
         mapFragment.getMapAsync(this);
         return view;
+    }
+
+    private void init(){
+        mSearchText = getView().findViewById(R.id.input_search);
+        mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE
+                        || actionId == keyEvent.ACTION_DOWN || actionId == keyEvent.KEYCODE_ENTER){
+                    geoLocate();
+                }
+                return false;
+            }
+        });
+    }
+
+    private void geoLocate(){
+        Log.d(TAG,"geoLocate: locating");
+        String searchString = mSearchText.getText().toString();
+        Geocoder geocoder = new Geocoder(getContext());
+        List<Address> list = new ArrayList<>();
+
+        try {
+            list = geocoder.getFromLocationName(searchString,1);
+
+        }catch (IOException e){
+            Log.e(TAG, "geoLocate: IOException = "+ e.getMessage());
+        }
+        if (list.size() > 0){
+            Address address = list.get(0);
+            Log.d(TAG, "geoLocate: found a location "+ address.toString());
+           // Toast.makeText(getContext(),address.toString(),Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 
@@ -101,6 +147,7 @@ public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
                 mMap.addMarker(markerOptions);
             }
         });
+        init();
     }
 
     private void getLocationPermission() {
