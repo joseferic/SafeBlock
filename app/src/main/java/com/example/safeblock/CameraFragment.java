@@ -34,8 +34,11 @@ public class CameraFragment extends Fragment   {
     private void scanCode(){
         IntentIntegrator integrator = new IntentIntegrator(this.getActivity()).forSupportFragment(this);
         // use forSupportFragment or forFragment method to use fragments instead of activity
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
-       // integrator.setPrompt("Scan Bacrcode");
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+        integrator.setOrientationLocked(false);
+
+        integrator.setPrompt("Scan Bacrcode");
+
 //        integrator.setResultDisplayDuration(0); // milliseconds to display result on screen after scan
 //        integrator.setCameraId(0);  // Use a specific camera of the device
         integrator.initiateScan();

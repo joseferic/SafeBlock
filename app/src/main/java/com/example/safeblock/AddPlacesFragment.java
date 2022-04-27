@@ -1,5 +1,7 @@
 package com.example.safeblock;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,6 +14,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -23,12 +26,16 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.safeblock.databinding.FragmentAddPlacesBinding;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -42,9 +49,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.AutocompletePrediction;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -59,11 +73,15 @@ public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
 
     private Boolean mLocationPermissionGranted = false;
 
+
     private GoogleMap mMap;
 
     FusedLocationProviderClient client;
     //widgets
     private EditText mSearchText;
+
+    private GoogleApiClient mGoogleApiClient;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,6 +96,9 @@ public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void init(){
+
+        getCurrentLocation();
+
         mSearchText = getView().findViewById(R.id.input_search);
         mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -85,10 +106,39 @@ public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE
                         || actionId == keyEvent.ACTION_DOWN || actionId == keyEvent.KEYCODE_ENTER){
                     geoLocate();
+                  //  getPlaceInfo();
                 }
                 return false;
             }
         });
+
+        hideSoftKeyboard();
+    }
+
+    private void getPlaceInfo(){
+        Places.initialize(getContext(), BuildConfig.MAPS_API_KEY);
+        mSearchText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG,Place.Field.NAME);
+                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY,fieldList).build(getContext());
+                startActivityForResult(intent,100);
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100 && resultCode == RESULT_OK){
+            Place place = Autocomplete.getPlaceFromIntent(data);
+            Log.d(TAG,"getPlaceInfo" +place.getName());
+            Log.d(TAG,"getPlaceInfo" +place.getLatLng());
+            Log.d(TAG,"getPlaceInfo" +place.getAddress());
+        } else if (resultCode == AutocompleteActivity.RESULT_ERROR){
+            Status status = Autocomplete.getStatusFromIntent(data);
+            Toast.makeText(getActivity(),status.getStatusMessage(),Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void geoLocate(){
@@ -218,6 +268,7 @@ public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
                             // Check condition
                             if (location != null) {
                                 // When location result is not null
+                                Log.d(TAG, "LOKASI SEKARANG = " + location.toString());
                                 // set latitude
                                 Log.d(TAG, String.valueOf(location.getLatitude()));
                                 // set longitude
@@ -276,4 +327,10 @@ public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
                                     Intent.FLAG_ACTIVITY_NEW_TASK));
         }
     }
+
+    private void hideSoftKeyboard(){
+        this.getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
+
+
 }

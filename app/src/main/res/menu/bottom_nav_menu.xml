@@ -4,23 +4,27 @@
 
     <item
         android:title="Home"
+        android:visible="true"
         android:icon="@drawable/ic_baseline_home_24"
         android:id="@+id/home_bottom_nav"
         />
 
     <item
         android:title="Camera"
+        android:visible="true"
         android:icon="@drawable/ic_baseline_qr_code_scanner_24"
         android:id="@+id/camera_bottom_nav"/>
 
     <item
         android:title="Visited Placess"
+        android:visible="true"
         android:icon="@drawable/ic_baseline_place_24"
         android:id="@+id/history_bottom_nav"
         />
 
     <item
         android:title="Add Places"
+        android:visible="true"
         android:icon="@drawable/ic_baseline_add_location_alt_24"
         android:id="@+id/addPlaces_bottom_nav"
         />
