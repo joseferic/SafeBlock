@@ -33,6 +33,9 @@ android {
 }
 
 dependencies {
+    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.3.1'
+    implementation("com.squareup.okhttp3:logging-interceptor:4.3.1")
+
     implementation 'org.web3j:core:4.8.7'
     implementation 'org.web3j:core:4.8.7-android'
     implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
@@ -40,14 +43,8 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.9.0'
 
 
-
-
-
-
-
-    implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
-
-    implementation "com.google.zxing:core:3.3.3"
+    implementation('com.journeyapps:zxing-android-embedded:4.3.0') { transitive = false }
+    implementation 'com.google.zxing:core:3.3.0'
 
 
     implementation 'com.google.android.libraries.places:places:2.2.0'

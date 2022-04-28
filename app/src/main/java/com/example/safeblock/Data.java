@@ -30,12 +30,12 @@ public class Data {
     @Override
     public String toString() {
         return getClass().getSimpleName()
-                + "[transaction_id=" + transaction_id
-                +", _walletAddress=" + _walletAddress
-                +", name=" + name
-                +", email=" + email
-                +", place_visited=" + place_visited
-                +", place_visited=" + time_visited
-                +", place_visited=" + infected  + "]";
+                + "[transaction_id =" + transaction_id
+                +", _walletAddress =" + _walletAddress
+                +", name =" + name
+                +", email =" + email
+                +", place_visited =" + place_visited
+                +", time_visited =" + time_visited
+                +", infected =" + infected  + "]";
     }
 }

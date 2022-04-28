@@ -163,29 +163,7 @@ public class MainActivity extends AppCompatActivity {
 //Get_List_Length(web3j,credentials,contractGasProvider, contractAddress);
 
 //Test.setText(List_Length.toString());
-//        userData.get_list_user().flowable().subscribeOn(Schedulers.io()).subscribe(new Consumer<List>() {
-//            @Override
-//            public void accept(List list) throws Exception {
-//                Log.i("DATA = ",list.get(1).toString());
-//            }
-//        });
 
-//        userData.get_user_list_length().flowable().subscribeOn(Schedulers.io()).subscribe(new Consumer<BigInteger>() {
-//            @Override
-//            public void accept(BigInteger data) throws Exception {
-//                Log.v("Data", String.valueOf(data));
-//
-//            }
-//        });
-//
-//        userData.users(BigInteger.valueOf(1)).flowable().subscribeOn(Schedulers.io()).subscribe(new Consumer<Tuple7<BigInteger, String, String, String, String, String, Boolean>>() {
-//            @Override
-//            public void accept(Tuple7<BigInteger, String, String, String, String, String, Boolean> Data) throws Exception {
-//                Log.i("DATA = ",Data.toString());
-//
-//            }
-//
-//        });
 
 
 //        userData.create_user_data("Test 1", "Hospital",date.toString()).flowable()

@@ -36,12 +36,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.journeyapps.barcodescanner.CaptureActivity"
-            android:screenOrientation="sensorPortrait"
+        <activity
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:stateNotNeeded="true"
-            android:theme="@style/zxing_CaptureTheme"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            tools:replace="android:screenOrientation" />
+            android:screenOrientation="portrait"
+            tools:replace="screenOrientation" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
