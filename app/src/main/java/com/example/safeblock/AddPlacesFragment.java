@@ -6,6 +6,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -55,6 +56,7 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -296,6 +298,20 @@ public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
                                 // set longitude
                                 Log.d(TAG, String.valueOf(location.getLongitude()));
                                 moveCamera(new LatLng(location.getLatitude(),location.getLongitude()),DEFAULT_ZOOM);
+
+                                //TEST SEND GMAPS DATA
+                                PlaceData data = new PlaceData(
+                                        "HOME",
+                                        location.getLatitude(),
+                                        location.getLongitude()
+                                );
+                                //set variables of 'myObject', etc.
+                                SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+                                SharedPreferences.Editor prefsEditor = preferences.edit();
+                                Gson gson = new Gson();
+                                String json = gson.toJson(data);
+                                prefsEditor.putString("Data Place", json);
+                                prefsEditor.commit();
                             } else {
                                 // When location result is null
                                 // initialize location request

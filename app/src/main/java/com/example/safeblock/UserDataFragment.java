@@ -51,12 +51,6 @@ public class UserDataFragment extends Fragment {
                 String json = gson.toJson(data);
                 prefsEditor.putString("Data", json);
                 prefsEditor.commit();
-
-
-//                To retrieve:
-//                Gson gson = new Gson();
-//                String json = mPrefs.getString("data", "");
-//                MyObject obj = gson.fromJson(json, MyObject.class);
             }
         });
 
