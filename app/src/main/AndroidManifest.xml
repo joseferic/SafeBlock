@@ -3,15 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.safeblock">
 
-
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -19,36 +17,34 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/ThemeSafeBlock"
-        >
+        android:theme="@style/ThemeSafeBlock">
+        <activity
+            android:name=".TranscationActivity"
+            android:exported="false"
+            android:label="@string/title_activity_transcation"
+            android:theme="@style/ThemeSafeBlock.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/ThemeSafeBlock"
             android:screenOrientation="portrait"
-            tools:replace="screenOrientation"
+            android:theme="@style/ThemeSafeBlock"
             android:windowSoftInputMode="stateAlwaysHidden"
-            >
+            tools:replace="screenOrientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
-            android:stateNotNeeded="true"
             android:screenOrientation="portrait"
+            android:stateNotNeeded="true"
             tools:replace="screenOrientation" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />
-
     </application>
 
-
-
 </manifest>
-

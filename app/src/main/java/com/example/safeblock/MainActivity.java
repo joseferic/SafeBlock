@@ -22,11 +22,17 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.material.tabs.TabLayout;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.gas.ContractGasProvider;
 import org.web3j.tx.gas.DefaultGasProvider;
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -64,7 +70,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //current date and time
-        java.util.Date date = new java.util.Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+        System.out.println(formatter.format(date));
 
         final Web3j web3j = Web3j.build(
                 new HttpService(
@@ -72,19 +80,20 @@ public class MainActivity extends AppCompatActivity {
                 )
         );
 
-        String contractAddress = "0x2Fd6E9DF12A797D8D2D76C000C8bCB6164f2985d";
-        Credentials credentials = Credentials.create("fd20f2be43dd3fa879826279c6067a18aa5b9a40d5ed7f6c2e672e4154876ba5");
+        String contractAddress = "0x2efd3Dc020D75f5Abf12C74F011aBB3Be8fc7f6C";
+        String privateKey = "fd20f2be43dd3fa879826279c6067a18aa5b9a40d5ed7f6c2e672e4154876ba5";
+
+        Credentials credentials = Credentials.create(privateKey);
         ContractGasProvider contractGasProvider = new DefaultGasProvider();
-        UserData_SmartContract userData = UserData_SmartContract
+        UserData_sol_UserData userData = UserData_sol_UserData
                 .load(contractAddress,web3j,credentials,contractGasProvider);
-
         try {
-
+            //userData.create_user_data("Josef Eric","Test Place",formatter.format(date)).sendAsync().get();
             Log.v("Data length list",userData.get_user_list_length().sendAsync().get().toString());
-            //int list_length = parseInt(userData.get_user_list_length().sendAsync().get().toString());
+            Integer list_length = Integer.valueOf(userData.get_user_list_length().sendAsync().get().toString());
             ArrayList<Data> list_user = new ArrayList<>();
 
-            for (int i=0; i<2;i++){
+            for (int i=0; i<list_length;i++){
                 Data nData = new Data(
                         userData.users(BigInteger.valueOf(i)).sendAsync().get().component1(),
                         userData.users(BigInteger.valueOf(i)).sendAsync().get().component2(),
@@ -94,13 +103,15 @@ public class MainActivity extends AppCompatActivity {
                         userData.users(BigInteger.valueOf(i)).sendAsync().get().component6(),
                         userData.users(BigInteger.valueOf(i)).sendAsync().get().component7()
                 );
+                Log.v("Data User On List ", nData.transaction_id.toString());
                 Log.v("Data User Detail ",userData.users(BigInteger.valueOf(i)).sendAsync().get().toString());
                 list_user.add(nData);
-                Log.v("Data User On List ", nData.name);
-                Log.v("Data List ", String.valueOf(list_user));
             }
-        }catch (Throwable throwable){
 
+            Log.v("Data List ", String.valueOf(list_user));
+            Log.v("Data List ", String.valueOf(list_user.size()));
+        }catch (Throwable throwable){
+            throwable.printStackTrace();
         }
     }
 

@@ -54,7 +54,10 @@ public class CameraFragment extends Fragment   {
         binding.buttonQrscanner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                scanQR();
+                //scanQR();
+                //sendDatatoBlockChain("Home");
+                Intent intent = new Intent(getActivity(), TranscationActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -106,7 +109,7 @@ public class CameraFragment extends Fragment   {
         barcodeLauncher.launch(options);
     }
 
-    private void sendDatatoBlockChain(String placeName) throws Exception {
+    private void sendDatatoBlockChain(String placeName) {
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date date = new Date();
@@ -118,23 +121,23 @@ public class CameraFragment extends Fragment   {
                 )
         );
 
-        String contractAddress = "0x2Fd6E9DF12A797D8D2D76C000C8bCB6164f2985d";
-        Credentials credentials = Credentials.create("fd20f2be43dd3fa879826279c6067a18aa5b9a40d5ed7f6c2e672e4154876ba5");
+        String contractAddress = "0x2efd3Dc020D75f5Abf12C74F011aBB3Be8fc7f6C";
+        String privateKey = "fd20f2be43dd3fa879826279c6067a18aa5b9a40d5ed7f6c2e672e4154876ba5";
+
+        Credentials credentials = Credentials.create(privateKey);
         ContractGasProvider contractGasProvider = new DefaultGasProvider();
-        UserData_SmartContract user_dataContract = UserData_SmartContract
+        UserData_sol_UserData user_dataContract = UserData_sol_UserData
                 .load(contractAddress,web3j,credentials,contractGasProvider);
 
 
-        user_dataContract.create_user_data("Josef Eric", placeName,formatter.format(date)).flowable()
-                .subscribeOn(Schedulers.io()).subscribe(new Consumer<TransactionReceipt>() {
-                    @Override
-                    public void accept(TransactionReceipt transactionReceipt) throws Exception {
-                        Log.d(TAG,transactionReceipt.getTransactionHash());
-                        Toast.makeText(getContext(),"Data Saved at Ethereum",Toast.LENGTH_LONG).show();
-                    }
-                });
-        //Log.d(TAG, receipt.get().getTransactionHash());
 
 
+        user_dataContract.create_user_data("Josef Eric",placeName,formatter.format(date)).flowable().subscribeOn(Schedulers.io()).subscribe(new Consumer<TransactionReceipt>() {
+            @Override
+            public void accept(TransactionReceipt transactionReceipt) throws Exception {
+                    Log.d(TAG,transactionReceipt.getTransactionHash());
+                    Toast.makeText(getContext(),"Transaksi Selesai",Toast.LENGTH_LONG).show();
+                }
+            });
     }
 }
