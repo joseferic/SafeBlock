@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -69,50 +70,50 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        //current date and time
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        Date date = new Date();
-        System.out.println(formatter.format(date));
-
-        final Web3j web3j = Web3j.build(
-                new HttpService(
-                        "https://rinkeby.infura.io/v3/d9100bd917c6448695785e26e5f0a095"
-                )
-        );
-
-        String contractAddress = "0x2efd3Dc020D75f5Abf12C74F011aBB3Be8fc7f6C";
-        String privateKey = "fd20f2be43dd3fa879826279c6067a18aa5b9a40d5ed7f6c2e672e4154876ba5";
-
-        Credentials credentials = Credentials.create(privateKey);
-        ContractGasProvider contractGasProvider = new DefaultGasProvider();
-        UserData_sol_UserData userData = UserData_sol_UserData
-                .load(contractAddress,web3j,credentials,contractGasProvider);
-        try {
-            //userData.create_user_data("Josef Eric","Test Place",formatter.format(date)).sendAsync().get();
-            Log.v("Data length list",userData.get_user_list_length().sendAsync().get().toString());
-            Integer list_length = Integer.valueOf(userData.get_user_list_length().sendAsync().get().toString());
-            ArrayList<Data> list_user = new ArrayList<>();
-
-            for (int i=0; i<list_length;i++){
-                Data nData = new Data(
-                        userData.users(BigInteger.valueOf(i)).sendAsync().get().component1(),
-                        userData.users(BigInteger.valueOf(i)).sendAsync().get().component2(),
-                        userData.users(BigInteger.valueOf(i)).sendAsync().get().component3(),
-                        userData.users(BigInteger.valueOf(i)).sendAsync().get().component4(),
-                        userData.users(BigInteger.valueOf(i)).sendAsync().get().component5(),
-                        userData.users(BigInteger.valueOf(i)).sendAsync().get().component6(),
-                        userData.users(BigInteger.valueOf(i)).sendAsync().get().component7()
-                );
-                Log.v("Data User On List ", nData.transaction_id.toString());
-                Log.v("Data User Detail ",userData.users(BigInteger.valueOf(i)).sendAsync().get().toString());
-                list_user.add(nData);
-            }
-
-            Log.v("Data List ", String.valueOf(list_user));
-            Log.v("Data List ", String.valueOf(list_user.size()));
-        }catch (Throwable throwable){
-            throwable.printStackTrace();
-        }
+//        //current date and time
+//        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+//        Date date = new Date();
+//        System.out.println(formatter.format(date));
+//
+//        final Web3j web3j = Web3j.build(
+//                new HttpService(
+//                        "https://rinkeby.infura.io/v3/d9100bd917c6448695785e26e5f0a095"
+//                )
+//        );
+//
+//        String contractAddress = "0x2efd3Dc020D75f5Abf12C74F011aBB3Be8fc7f6C";
+//        String privateKey = "fd20f2be43dd3fa879826279c6067a18aa5b9a40d5ed7f6c2e672e4154876ba5";
+//
+//        Credentials credentials = Credentials.create(privateKey);
+//        ContractGasProvider contractGasProvider = new DefaultGasProvider();
+//        UserData_sol_UserData userData = UserData_sol_UserData
+//                .load(contractAddress,web3j,credentials,contractGasProvider);
+//        try {
+//            //userData.create_user_data("Josef Eric","Test Place",formatter.format(date)).sendAsync().get();
+//            Log.v("Data length list",userData.get_user_list_length().sendAsync().get().toString());
+//            Integer list_length = Integer.valueOf(userData.get_user_list_length().sendAsync().get().toString());
+//            ArrayList<Data> list_user = new ArrayList<>();
+//
+//            for (int i=0; i<list_length;i++){
+//                Data nData = new Data(
+//                        userData.users(BigInteger.valueOf(i)).sendAsync().get().component1(),
+//                        userData.users(BigInteger.valueOf(i)).sendAsync().get().component2(),
+//                        userData.users(BigInteger.valueOf(i)).sendAsync().get().component3(),
+//                        userData.users(BigInteger.valueOf(i)).sendAsync().get().component4(),
+//                        userData.users(BigInteger.valueOf(i)).sendAsync().get().component5(),
+//                        userData.users(BigInteger.valueOf(i)).sendAsync().get().component6(),
+//                        userData.users(BigInteger.valueOf(i)).sendAsync().get().component7()
+//                );
+//                Log.v("Data User On List ", nData.transaction_id.toString());
+//                Log.v("Data User Detail ",userData.users(BigInteger.valueOf(i)).sendAsync().get().toString());
+//                list_user.add(nData);
+//            }
+//
+//            Log.v("Data List ", String.valueOf(list_user));
+//            Log.v("Data List ", String.valueOf(list_user.size()));
+//        }catch (Throwable throwable){
+//            throwable.printStackTrace();
+//        }
     }
 
     private void replacedFragment(Fragment fragment){
@@ -149,6 +150,11 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Can't Make Map Requests",Toast.LENGTH_SHORT).show();
         }
         return false;
+    }
+
+    public  Context getContext(){
+        Context mContext = MainActivity.this;
+        return mContext;
     }
 }
 

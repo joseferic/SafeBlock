@@ -32,19 +32,18 @@ public class HistoryUserFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentHistoryUserBinding.inflate(inflater,container,false);
 
-        SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = preferences.getString("Data", "");
-        user_data obj = gson.fromJson(json, user_data.class);
+
+        user_data obj = getUserData();
+
         if (obj !=null){
             binding.historyuserTv.setText(obj.toString());
         }
         else{
             binding.historyuserTv.setText("Data User Null");
         }
-        Gson gson_place = new Gson();
-        String json_place_data =  preferences.getString("Data Place","");
-        PlaceData obj_place = gson_place.fromJson(json_place_data,PlaceData.class);
+
+        PlaceData obj_place = getPlace();
+
         if (obj_place !=null){
             binding.tvTestDataGmaps.setText(obj_place.toString());
         }
@@ -53,6 +52,24 @@ public class HistoryUserFragment extends Fragment {
         }
        // binding.historyuserTv.setText(obj.toString());
         return binding.getRoot();
+    }
+
+
+
+    public user_data getUserData(){
+        SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = preferences.getString("Data", "");
+        user_data obj = gson.fromJson(json, user_data.class);
+        return obj;
+    }
+
+    public PlaceData getPlace(){
+        SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        Gson gson_place = new Gson();
+        String json_place_data =  preferences.getString("Data Place","");
+        PlaceData obj_place = gson_place.fromJson(json_place_data,PlaceData.class);
+        return obj_place;
     }
 
     @Override

@@ -2,8 +2,10 @@ package com.example.safeblock;
 
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 
@@ -18,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.safeblock.databinding.FragmentCameraBinding;
+import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.journeyapps.barcodescanner.ScanContract;
@@ -50,18 +53,30 @@ public class CameraFragment extends Fragment   {
        // View view = inflater.inflate(R.layout.fragment_camera,container,false);
        binding = FragmentCameraBinding.inflate(inflater, container, false);
        // scanCode();
+        user_data user_data = getUserData();
+        PlaceData placeData = getPlace();
 
         binding.buttonQrscanner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //scanQR();
-                //sendDatatoBlockChain("Home");
-                Intent intent = new Intent(getActivity(), TranscationActivity.class);
-                startActivity(intent);
+                scanQR();
             }
         });
 
         return binding.getRoot();
+    }
+
+    private void sendData(String userName, String placeName)
+    {
+        //INTENT OBJ
+        Intent i = new Intent(getActivity().getBaseContext(), TranscationActivity.class);
+
+        //PACK DATA
+        i.putExtra("USER_NAME_KEY", userName);
+        i.putExtra("PLACE_NAME_KEY", placeName);
+
+        //START ACTIVITY
+        getActivity().startActivity(i);
     }
 
     // Register the launcher and result handler
@@ -75,26 +90,22 @@ public class CameraFragment extends Fragment   {
                     Toast.makeText(getContext(), "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
                     Log.d(TAG, String.valueOf((result.getContents()!=null)));
                     binding.tvCameraFragment.setText(result.getContents());
-                    try {
-                        sendDatatoBlockChain(result.getContents());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    AlertDialog.Builder builder = new AlertDialog.Builder((getContext()));
-                    builder.setMessage("Scanning Result");
-                    builder.setPositiveButton("Scan Again", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            scanQR();
-                        }
-                    }).setNegativeButton("Finish", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-
-                        }
-                    });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                    sendData(getUserData().name,result.getContents());
+//                    AlertDialog.Builder builder = new AlertDialog.Builder((getContext()));
+//                    builder.setMessage("Scanning Result");
+//                    builder.setPositiveButton("Scan Again", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            scanQR();
+//                        }
+//                    }).setNegativeButton("Finish", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//
+//                        }
+//                    });
+//                    AlertDialog dialog = builder.create();
+//                    dialog.show();
                 }
             });
 
@@ -109,35 +120,19 @@ public class CameraFragment extends Fragment   {
         barcodeLauncher.launch(options);
     }
 
-    private void sendDatatoBlockChain(String placeName) {
+    public user_data getUserData(){
+        SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = preferences.getString("Data", "");
+        user_data obj = gson.fromJson(json, user_data.class);
+        return obj;
+    }
 
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        Date date = new Date();
-        System.out.println(formatter.format(date));
-
-        final Web3j web3j = Web3j.build(
-                new HttpService(
-                        "https://rinkeby.infura.io/v3/d9100bd917c6448695785e26e5f0a095"
-                )
-        );
-
-        String contractAddress = "0x2efd3Dc020D75f5Abf12C74F011aBB3Be8fc7f6C";
-        String privateKey = "fd20f2be43dd3fa879826279c6067a18aa5b9a40d5ed7f6c2e672e4154876ba5";
-
-        Credentials credentials = Credentials.create(privateKey);
-        ContractGasProvider contractGasProvider = new DefaultGasProvider();
-        UserData_sol_UserData user_dataContract = UserData_sol_UserData
-                .load(contractAddress,web3j,credentials,contractGasProvider);
-
-
-
-
-        user_dataContract.create_user_data("Josef Eric",placeName,formatter.format(date)).flowable().subscribeOn(Schedulers.io()).subscribe(new Consumer<TransactionReceipt>() {
-            @Override
-            public void accept(TransactionReceipt transactionReceipt) throws Exception {
-                    Log.d(TAG,transactionReceipt.getTransactionHash());
-                    Toast.makeText(getContext(),"Transaksi Selesai",Toast.LENGTH_LONG).show();
-                }
-            });
+    public PlaceData getPlace(){
+        SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        Gson gson_place = new Gson();
+        String json_place_data =  preferences.getString("Data Place","");
+        PlaceData obj_place = gson_place.fromJson(json_place_data,PlaceData.class);
+        return obj_place;
     }
 }

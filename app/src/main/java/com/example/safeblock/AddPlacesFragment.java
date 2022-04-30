@@ -49,6 +49,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.AutocompletePrediction;
@@ -91,11 +92,27 @@ public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
         View view = inflater.inflate(R.layout.fragment_add_places, container, false);
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         // Initialize location client
+       // getLocationPermission();
+
         client = LocationServices.getFusedLocationProviderClient(getActivity());
 
         mapFragment.getMapAsync(this);
         return view;
     }
+
+
+
+//    private void getLocation(){
+//        if ((ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+//                == PackageManager.PERMISSION_GRANTED ) &&
+//        (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
+//                == PackageManager.PERMISSION_GRANTED ))
+//        {
+//            mapFragment.getMapAsync(this);
+//        }else{
+//
+//        }
+//    }
 
 //    private void init(){
 //
@@ -168,14 +185,29 @@ public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
-        //getLocationPermission();
-        getCurrentLocation();
-        if (ContextCompat.checkSelfPermission(getContext(), FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            if (ContextCompat.checkSelfPermission(getContext(), COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                Log.d(TAG, "HILU");
-                mMap.setMyLocationEnabled(true);
-            }
+
+       // getCurrentLocation();
+        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                        PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setMyLocationButtonEnabled(true);
+            client.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    Toast.makeText(getContext(),"Location = " + location.getLatitude() + " "+ location.getLongitude(),Toast.LENGTH_LONG).show();
+                    moveCamera(locationToLatLng(location),DEFAULT_ZOOM);
+                }
+            });
+        } else {
+            ActivityCompat.requestPermissions(getActivity(), new String[] {
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION },
+                    LOCATION_PERMISSION_REQUEST_CODE);
         }
+
+        
 
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
@@ -203,17 +235,21 @@ public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
         //init();
     }
 
-//    private void getLocationPermission() {
-//        Log.d(TAG, "getLocationPermission()");
-//        String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-//        if (ContextCompat.checkSelfPermission(getContext(), FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//            if (ContextCompat.checkSelfPermission(getContext(), COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//                mLocationPermissionGranted = true;
-//            } else {
-//                ActivityCompat.requestPermissions(getActivity(), permissions, LOCATION_PERMISSION_REQUEST_CODE);
-//            }
-//        }
-//    }
+    private void getLocationPermission() {
+        Log.d(TAG, "getLocationPermission()");
+        String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+        if (ContextCompat.checkSelfPermission(getContext(), FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(getContext(), COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                mLocationPermissionGranted = true;
+            } else {
+                ActivityCompat.requestPermissions(getActivity(), permissions, LOCATION_PERMISSION_REQUEST_CODE);
+            }
+        }
+    }
+
+    private LatLng locationToLatLng(Location location){
+        return new LatLng(location.getLatitude(),location.getLongitude());
+    }
 
     private void moveCamera(LatLng latLng, float zoom) {
         Log.d(TAG, "moveCamera to: lat:" + latLng.latitude + " + long:" + latLng.longitude);
@@ -254,7 +290,7 @@ public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
                 == PackageManager.PERMISSION_GRANTED)) {
             // When permission are granted
             // Call  method
-            getCurrentLocation();
+           // getCurrentLocation();
         } else {
             // When permission are denied
             // Display toast
