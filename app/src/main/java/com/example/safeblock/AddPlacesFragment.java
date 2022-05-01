@@ -8,8 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -23,19 +22,13 @@ import androidx.fragment.app.Fragment;
 import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.example.safeblock.databinding.FragmentAddPlacesBinding;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -51,18 +44,16 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.AutocompletePrediction;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.gson.Gson;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 
 public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
@@ -76,28 +67,73 @@ public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
 
     private Boolean mLocationPermissionGranted = false;
 
-
+    private SupportMapFragment mapFragment;
     private GoogleMap mMap;
 
+    private FragmentAddPlacesBinding binding;
     FusedLocationProviderClient client;
-    //widgets
-    // private EditText mSearchText;
+    private Boolean HideMap = false;
 
-    private GoogleApiClient mGoogleApiClient;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_places, container, false);
+
+        binding = FragmentAddPlacesBinding.inflate(inflater,container,false);
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         // Initialize location client
        // getLocationPermission();
-
         client = LocationServices.getFusedLocationProviderClient(getActivity());
+        binding.buttonToHideMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (HideMap == false){
+                    HideMap = true;
+                    binding.buttonToHideMap.setText("Show Map");
+                    mapFragment.getView().setVisibility(View.INVISIBLE);
+                }else{
+                    HideMap = false;
+                    binding.buttonToHideMap.setText("Hide Map");
+                    mapFragment.getView().setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         mapFragment.getMapAsync(this);
-        return view;
+
+        binding.simpanButtonAddPlace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HideMap = true;
+                mapFragment.getView().setVisibility(View.INVISIBLE);
+                binding.buttonToHideMap.setText("Show Map");
+
+                if (!(binding.inputNamaTempat.getText().toString().equals(""))){
+                    String placeName = binding.inputNamaTempat.getText().toString().trim();
+                    getQRCode(placeName);
+                }
+                else{
+                    Toast.makeText(getContext(),"Mohon Masukan Nama Tempat",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        return binding.getRoot();
+    }
+
+    private void getQRCode(String placeName){
+        MultiFormatWriter writer = new MultiFormatWriter();
+
+        try {
+            BitMatrix matrix = writer.encode(placeName, BarcodeFormat.QR_CODE,350,350);
+            BarcodeEncoder encoder = new BarcodeEncoder();
+            Bitmap bitmap = encoder.createBitmap(matrix);
+            binding.ivQRCode.setImageBitmap(bitmap);
+            InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            manager.hideSoftInputFromWindow(binding.inputNamaTempat.getApplicationWindowToken(),0);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -193,6 +229,7 @@ public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
                         PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
+            mMap.getUiSettings().setMapToolbarEnabled(false);
             client.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
                 @Override
                 public void onSuccess(Location location) {

@@ -56,6 +56,7 @@
         android:layout_marginTop="80dp"
         android:onClick="submit"
         android:text="simpan"
+        android:backgroundTint="@color/black"
         android:textAllCaps="true"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"

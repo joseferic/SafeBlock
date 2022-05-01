@@ -16,7 +16,7 @@
         android:id="@+id/camera_bottom_nav"/>
 
     <item
-        android:title="Visited Placess"
+        android:title="Visited Places"
         android:visible="true"
         android:icon="@drawable/ic_baseline_place_24"
         android:id="@+id/history_bottom_nav"
