@@ -73,7 +73,7 @@ public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
     private FragmentAddPlacesBinding binding;
     FusedLocationProviderClient client;
     private Boolean HideMap = false;
-
+    private Location currentLocation;
 
 
     @Override
@@ -111,9 +111,15 @@ public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
 
                 if (!(binding.inputNamaTempat.getText().toString().equals(""))){
                     String placeName = binding.inputNamaTempat.getText().toString().trim();
-                    getQRCode(placeName);
+                    if (currentLocation !=null){
+                        LatLng latLngCurrentPosition = locationToLatLng(currentLocation);
+                        binding.ivQRCode.setVisibility(View.VISIBLE);
+                        getQRCode(placeName,latLngCurrentPosition);
+                    }
                 }
                 else{
+                    binding.ivQRCode.setVisibility(View.INVISIBLE);
+
                     Toast.makeText(getContext(),"Mohon Masukan Nama Tempat",Toast.LENGTH_SHORT).show();
                 }
             }
@@ -121,11 +127,11 @@ public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
         return binding.getRoot();
     }
 
-    private void getQRCode(String placeName){
+    private void getQRCode(String placeName,LatLng latLngPlace){
         MultiFormatWriter writer = new MultiFormatWriter();
 
         try {
-            BitMatrix matrix = writer.encode(placeName, BarcodeFormat.QR_CODE,350,350);
+            BitMatrix matrix = writer.encode(placeName + " LatLng = " + latLngPlace, BarcodeFormat.QR_CODE,350,350);
             BarcodeEncoder encoder = new BarcodeEncoder();
             Bitmap bitmap = encoder.createBitmap(matrix);
             binding.ivQRCode.setImageBitmap(bitmap);
@@ -234,6 +240,7 @@ public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
                 @Override
                 public void onSuccess(Location location) {
                     Toast.makeText(getContext(),"Location = " + location.getLatitude() + " "+ location.getLongitude(),Toast.LENGTH_LONG).show();
+                    getCurrentPostion(location);
                     moveCamera(locationToLatLng(location),DEFAULT_ZOOM);
                 }
             });
@@ -270,6 +277,10 @@ public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
         });
 
         //init();
+    }
+
+    private void getCurrentPostion(Location location){
+        currentLocation = location;
     }
 
     private void getLocationPermission() {
@@ -316,9 +327,7 @@ public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
 
 
     @Override
-    public void onRequestPermissionsResult(
-            int requestCode, @NonNull String[] permissions,
-            @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(
                 requestCode, permissions, grantResults);
         // Check condition
