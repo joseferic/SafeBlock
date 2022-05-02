@@ -144,49 +144,7 @@ public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
 
 
 
-//    private void getLocation(){
-//        if ((ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-//                == PackageManager.PERMISSION_GRANTED ) &&
-//        (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
-//                == PackageManager.PERMISSION_GRANTED ))
-//        {
-//            mapFragment.getMapAsync(this);
-//        }else{
-//
-//        }
-//    }
 
-//    private void init(){
-//
-//        getCurrentLocation();
-//
-//        mSearchText = getView().findViewById(R.id.input_search);
-//        mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-//                if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE
-//                        || actionId == keyEvent.ACTION_DOWN || actionId == keyEvent.KEYCODE_ENTER){
-//                    geoLocate();
-//                  //  getPlaceInfo();
-//                }
-//                return false;
-//            }
-//        });
-//
-//        hideSoftKeyboard();
-//    }
-
-//    private void getPlaceInfo(){
-//        Places.initialize(getContext(), BuildConfig.MAPS_API_KEY);
-//        mSearchText.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG,Place.Field.NAME);
-//                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY,fieldList).build(getContext());
-//                startActivityForResult(intent,100);
-//            }
-//        });
-//    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -202,25 +160,7 @@ public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-//    private void geoLocate(){
-//        Log.d(TAG,"geoLocate: locating");
-//        String searchString = mSearchText.getText().toString();
-//        Geocoder geocoder = new Geocoder(getContext());
-//        List<Address> list = new ArrayList<>();
-//
-//        try {
-//            list = geocoder.getFromLocationName(searchString,1);
-//
-//        }catch (IOException e){
-//            Log.e(TAG, "geoLocate: IOException = "+ e.getMessage());
-//        }
-//        if (list.size() > 0){
-//            Address address = list.get(0);
-//            Log.d(TAG, "geoLocate: found a location "+ address.toString());
-//           // Toast.makeText(getContext(),address.toString(),Toast.LENGTH_SHORT).show();
-//        }
-//
-//    }
+
 
 
     @SuppressLint("MissingPermission")

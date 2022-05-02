@@ -16,7 +16,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     Context context;
     List<Data> data;
 
-
     public RecyclerViewAdapter(Context mContenxt, List<Data> mData){
         this.context = mContenxt;
         this.data = mData;
@@ -35,8 +34,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.tv_placeName.setText(data.get(position).place_visited);
-        holder.tv_date.setText(data.get(position).time_visited);
-        holder.tv_transactionHash.setText(data.get(position)._walletAddress);
+        //holder.tv_date.setText(data.get(position).time_visited);
+        holder.tv_dateVisited.setText(data.get(position).time_visited);
     }
 
     @Override
@@ -48,13 +47,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         private TextView tv_placeName;
         private TextView tv_date;
-        private TextView tv_transactionHash;
+        private TextView tv_dateVisited;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_placeName = itemView.findViewById(R.id.tv_title);
-            tv_date = itemView.findViewById(R.id.tv_date);
-            tv_transactionHash = itemView.findViewById(R.id.tv_description);
+            //tv_date = itemView.findViewById(R.id.tv_date);
+            tv_dateVisited = itemView.findViewById(R.id.tv_description);
 
         }
     }

@@ -55,7 +55,8 @@ public class HistoryUserFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         // this is data from recycler view
-        getAllData();
+        user_data user_data = getUserData();
+        getAllData(user_data.name);
 
 
         // 3. create an adapter
@@ -65,7 +66,7 @@ public class HistoryUserFragment extends Fragment {
         return rootView;
     }
 
-    private void getAllData(){
+    private void getAllData(String username){
         listData = new ArrayList<>();
         final Web3j web3j = Web3j.build(
                 new HttpService(
@@ -99,11 +100,21 @@ public class HistoryUserFragment extends Fragment {
                 listData.add(nData);
             }
 
-            Log.v("Data List ", String.valueOf(listData));
-            Log.v("Data List ", String.valueOf(listData.size()));
+            Log.v("Data List Sebelum Filter", String.valueOf(listData));
+            Log.v("Data List Sebelum Filter ", String.valueOf(listData.size()));
+
+
+            for (int i=0; i<listData.size(); i++){
+                if (listData.get(i).name != username){
+                    listData.remove(i);
+                }
+            }
+            Log.v("Data List Sesudah Filter", String.valueOf(listData));
+            Log.v("Data List Sesudah Filter ", String.valueOf(listData.size()));
         }catch (Throwable throwable){
             throwable.printStackTrace();
         }
+
     }
 
 

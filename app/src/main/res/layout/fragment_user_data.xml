@@ -8,12 +8,25 @@
     tools:context=".UserDataFragment">
 
 
+    <ImageView
+        android:id="@+id/imageview_questionmark"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:src="@drawable/question_mark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.255" />
+
     <com.rengwuxian.materialedittext.MaterialEditText
         android:id="@+id/input_nama"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Nama"
         android:inputType="textPersonName"
+        android:text="Josef Eric"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,6 +43,7 @@
         android:layout_marginTop="80dp"
         android:hint="Email"
         android:inputType="textEmailAddress"
+        android:text="joseferic1@gmail.com"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,6 +57,7 @@
         android:layout_marginTop="80dp"
         android:hint="Private Key"
         android:inputType="text"
+        android:text="fd20f2be43dd3fa879826279c6067a18aa5b9a40d5ed7f6c2e672e4154876ba5"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,14 +68,41 @@
         android:id="@+id/simpan_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:onClick="submit"
-        android:text="simpan"
+        android:layout_marginTop="148dp"
         android:backgroundTint="@color/black"
+        android:onClick="submit"
+        android:text="Save"
         android:textAllCaps="true"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_private_key" />
+
+    <Button
+        android:id="@+id/back_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:backgroundTint="@color/black"
+        android:onClick="submit"
+        android:text="Back"
+        android:textAllCaps="true"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_private_key" />
+
+    <TextView
+        android:id="@+id/tv_user_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Data User"
+        android:textAlignment="center"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.072" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
