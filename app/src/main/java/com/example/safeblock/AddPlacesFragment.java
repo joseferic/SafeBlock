@@ -82,8 +82,7 @@ public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
 
         binding = FragmentAddPlacesBinding.inflate(inflater,container,false);
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        // Initialize location client
-       // getLocationPermission();
+
         client = LocationServices.getFusedLocationProviderClient(getActivity());
         binding.buttonToHideMap.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,7 +130,8 @@ public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
         MultiFormatWriter writer = new MultiFormatWriter();
 
         try {
-            BitMatrix matrix = writer.encode(placeName + " LatLng = " + latLngPlace, BarcodeFormat.QR_CODE,350,350);
+            String placeData = new Gson().toJson(new PlaceData(placeName,latLngPlace.latitude,latLngPlace.longitude));
+            BitMatrix matrix = writer.encode(placeData, BarcodeFormat.QR_CODE,350,350);
             BarcodeEncoder encoder = new BarcodeEncoder();
             Bitmap bitmap = encoder.createBitmap(matrix);
             binding.ivQRCode.setImageBitmap(bitmap);
@@ -141,27 +141,6 @@ public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
             e.printStackTrace();
         }
     }
-
-
-
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100 && resultCode == RESULT_OK){
-            Place place = Autocomplete.getPlaceFromIntent(data);
-            Log.d(TAG,"getPlaceInfo" +place.getName());
-            Log.d(TAG,"getPlaceInfo" +place.getLatLng());
-            Log.d(TAG,"getPlaceInfo" +place.getAddress());
-        } else if (resultCode == AutocompleteActivity.RESULT_ERROR){
-            Status status = Autocomplete.getStatusFromIntent(data);
-            Toast.makeText(getActivity(),status.getStatusMessage(),Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
-
 
     @SuppressLint("MissingPermission")
     @Override
@@ -216,23 +195,11 @@ public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
-        //init();
+
     }
 
     private void getCurrentPostion(Location location){
         currentLocation = location;
-    }
-
-    private void getLocationPermission() {
-        Log.d(TAG, "getLocationPermission()");
-        String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-        if (ContextCompat.checkSelfPermission(getContext(), FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            if (ContextCompat.checkSelfPermission(getContext(), COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                mLocationPermissionGranted = true;
-            } else {
-                ActivityCompat.requestPermissions(getActivity(), permissions, LOCATION_PERMISSION_REQUEST_CODE);
-            }
-        }
     }
 
     private LatLng locationToLatLng(Location location){
@@ -287,110 +254,5 @@ public class AddPlacesFragment extends Fragment implements OnMapReadyCallback {
                     .show();
         }
     }
-
-    @SuppressLint("MissingPermission")
-    private void getCurrentLocation() {
-        // Initialize Location manager
-        LocationManager locationManager
-                = (LocationManager) getActivity()
-                .getSystemService(
-                        Context.LOCATION_SERVICE);
-        // Check condition
-        if (locationManager.isProviderEnabled(
-                LocationManager.GPS_PROVIDER)
-                || locationManager.isProviderEnabled(
-                LocationManager.NETWORK_PROVIDER)) {
-            // When location service is enabled
-            // Get last location
-            client.getLastLocation().addOnCompleteListener(
-                    new OnCompleteListener<Location>() {
-                        @Override
-                        public void onComplete(
-                                @NonNull Task<Location> task) {
-
-                            // Initialize location
-                            Location location
-                                    = task.getResult();
-                            // Check condition
-                            if (location != null) {
-                                // When location result is not null
-                                Log.d(TAG, "LOKASI SEKARANG = " + location.toString());
-                                // set latitude
-                                Log.d(TAG, String.valueOf(location.getLatitude()));
-                                // set longitude
-                                Log.d(TAG, String.valueOf(location.getLongitude()));
-                                moveCamera(new LatLng(location.getLatitude(),location.getLongitude()),DEFAULT_ZOOM);
-
-                                //TEST SEND GMAPS DATA
-                                PlaceData data = new PlaceData(
-                                        "HOME",
-                                        location.getLatitude(),
-                                        location.getLongitude()
-                                );
-                                //set variables of 'myObject', etc.
-                                SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-                                SharedPreferences.Editor prefsEditor = preferences.edit();
-                                Gson gson = new Gson();
-                                String json = gson.toJson(data);
-                                prefsEditor.putString("Data Place", json);
-                                prefsEditor.commit();
-                            } else {
-                                // When location result is null
-                                // initialize location request
-                                LocationRequest locationRequest
-                                        = new LocationRequest()
-                                        .setPriority(
-                                                LocationRequest
-                                                        .PRIORITY_HIGH_ACCURACY)
-                                        .setInterval(10000)
-                                        .setFastestInterval(
-                                                1000)
-                                        .setNumUpdates(1);
-
-                                // Initialize location call back
-                                LocationCallback
-                                        locationCallback
-                                        = new LocationCallback() {
-                                    @Override
-                                    public void
-                                    onLocationResult(
-                                            LocationResult
-                                                    locationResult) {
-                                        // Initialize
-                                        // location
-                                        Location location1
-                                                = locationResult
-                                                .getLastLocation();
-                                        // Set latitude
-                                        Log.d(TAG, String.valueOf(location.getLatitude()));
-                                        // Set longitude
-                                        Log.d(TAG, String.valueOf(location.getLongitude()));
-                                    }
-                                };
-
-                                // Request location updates
-                                client.requestLocationUpdates(
-                                        locationRequest,
-                                        locationCallback,
-                                        Looper.myLooper());
-                            }
-                        }
-                    });
-        } else {
-            // When location service is not enabled
-            // open location setting
-            startActivity(
-                    new Intent(
-                            Settings
-                                    .ACTION_LOCATION_SOURCE_SETTINGS)
-                            .setFlags(
-                                    Intent.FLAG_ACTIVITY_NEW_TASK));
-        }
-    }
-
-//    private void hideSoftKeyboard(){
-//        this.getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-//    }
-
 
 }

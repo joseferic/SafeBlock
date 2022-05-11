@@ -54,26 +54,38 @@ public class CameraFragment extends Fragment   {
        binding = FragmentCameraBinding.inflate(inflater, container, false);
        // scanCode();
         user_data user_data = getUserData();
-        PlaceData placeData = getPlace();
+        //PlaceData placeData = getPlace();
+
+       // String placeData = new Gson().toJson(new PlaceData("Home",-6.480627, 106.873730));
 
         binding.buttonQrscanner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                scanQR();
+                if(user_data !=null){
+                    scanQR();
+                   // getActivity().startActivity(new Intent(getActivity().getBaseContext(), TranscationActivity.class));
+                }
+                else{
+                    Toast.makeText(getContext(),"Mohon isi data diri terlebih dahulu",Toast.LENGTH_LONG).show();
+                }
+                //sendDatatoBlockchain(placeData);
+//                Intent i = new Intent(getActivity().getBaseContext(), TranscationActivity.class);
+//                Toast.makeText(getContext(),"Selesai Diklik",Toast.LENGTH_LONG);
+//                getActivity().startActivity(i);
             }
         });
 
         return binding.getRoot();
     }
 
-    private void sendData(String userName, String placeName)
+    private void sendData(String userName, String placeData)
     {
         //INTENT OBJ
         Intent i = new Intent(getActivity().getBaseContext(), TranscationActivity.class);
 
         //PACK DATA
         i.putExtra("USER_NAME_KEY", userName);
-        i.putExtra("PLACE_NAME_KEY", placeName);
+        i.putExtra("PLACE_DATA_KEY", placeData);
 
         //START ACTIVITY
         getActivity().startActivity(i);
@@ -83,29 +95,17 @@ public class CameraFragment extends Fragment   {
     private final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(new ScanContract(),
             result -> {
                 if(result.getContents() == null) {
-                    Log.d(TAG,"GAGAL");
+                    Log.d(TAG,"Gagal memuat data QR");
                     Toast.makeText(getContext(), "Cancelled", Toast.LENGTH_LONG).show();
                 } else {
-                    Log.d(TAG,"BERHASIL" +result.getContents());
-                    Toast.makeText(getContext(), "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+                    Log.d(TAG,"Result scan QR = " +result.getContents());
+                    Toast.makeText(getContext(), "Menyiapkan detail transaksi " + result.getContents(), Toast.LENGTH_LONG).show();
                     Log.d(TAG, String.valueOf((result.getContents()!=null)));
-                    binding.tvCameraFragment.setText(result.getContents());
+                    //binding.tvCameraFragment.setText(result.getContents());
+
                     sendData(getUserData().name,result.getContents());
-//                    AlertDialog.Builder builder = new AlertDialog.Builder((getContext()));
-//                    builder.setMessage("Scanning Result");
-//                    builder.setPositiveButton("Scan Again", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialogInterface, int i) {
-//                            scanQR();
-//                        }
-//                    }).setNegativeButton("Finish", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialogInterface, int i) {
-//
-//                        }
-//                    });
-//                    AlertDialog dialog = builder.create();
-//                    dialog.show();
+
+                    //sendDatatoBlockchain(getUserData().name,result.getContents());
                 }
             });
 
@@ -124,8 +124,13 @@ public class CameraFragment extends Fragment   {
         SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         Gson gson = new Gson();
         String json = preferences.getString("Data", "");
-        user_data obj = gson.fromJson(json, user_data.class);
-        return obj;
+        if(!(json.isEmpty())){
+            user_data obj = gson.fromJson(json, user_data.class);
+            return obj;
+        }
+        else{
+            return null;
+        }
     }
 
     public PlaceData getPlace(){
@@ -134,5 +139,44 @@ public class CameraFragment extends Fragment   {
         String json_place_data =  preferences.getString("Data Place","");
         PlaceData obj_place = gson_place.fromJson(json_place_data,PlaceData.class);
         return obj_place;
+    }
+
+    public void sendDatatoBlockchain(String place_Data){
+        String userName = "Josef Eric";
+        PlaceData placeData = new Gson().fromJson(place_Data,PlaceData.class);
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+        System.out.println(formatter.format(date));
+
+        final Web3j web3j = Web3j.build(
+                new HttpService(
+                        "https://rinkeby.infura.io/v3/d9100bd917c6448695785e26e5f0a095"
+                )
+        );
+
+        String contractAddress = "0xc5F8e80Dd0E58B182A5820B7063b413248039b58";
+        String privateKey = "fd20f2be43dd3fa879826279c6067a18aa5b9a40d5ed7f6c2e672e4154876ba5";
+
+        Credentials credentials = Credentials.create(privateKey);
+        ContractGasProvider contractGasProvider = new DefaultGasProvider();
+        UserData_sol_UserData user_dataContract = UserData_sol_UserData
+                .load(contractAddress, web3j, credentials, contractGasProvider);
+
+
+        String dateFormatted = formatter.format(date);
+        TransactionReceipt transactionReceipt = user_dataContract.create_user_data(userName,placeData.PlaceName,dateFormatted,String.valueOf(placeData.Latitude),String.valueOf(placeData.Longitude)).sendAsync().join();
+        Log.d(TAG,"Transaction Recepit = "+transactionReceipt);
+        if ((transactionReceipt.getTransactionHash()) != null) {
+
+
+            user_dataContract.update_transaction_hash(userName,placeData.PlaceName,dateFormatted,String.valueOf(placeData.Latitude),String.valueOf(placeData.Longitude),transactionReceipt.getTransactionHash()).sendAsync().join();
+            Log.d(TAG,"Transaction Hash = "+transactionReceipt.getTransactionHash());
+
+        }
+        else{
+
+        }
+
     }
 }

@@ -1,33 +1,41 @@
 package com.example.safeblock;
 
-import static android.content.ContentValues.TAG;
-import static android.content.Context.MODE_PRIVATE;
+
 
 import android.content.Context;
-import android.content.Intent;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
+
 import androidx.fragment.app.Fragment;
 
-import android.preference.PreferenceManager;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.safeblock.databinding.FragmentUserDataBinding;
+import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
+
+import org.web3j.crypto.Credentials;
+import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
+import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.gas.ContractGasProvider;
+import org.web3j.tx.gas.DefaultGasProvider;
+
+import java.io.IOException;
 
 
 public class UserDataFragment extends Fragment {
 
     private FragmentUserDataBinding binding;
 
-    public Boolean stateDataSaved;
+    public Boolean stateDataSaved= false;
 
     private Boolean Hide;
 
@@ -38,6 +46,7 @@ public class UserDataFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentUserDataBinding.inflate(inflater,container,false);
+
 
         checkState();
         if (stateDataSaved == true){
@@ -144,6 +153,7 @@ public class UserDataFragment extends Fragment {
 
         return binding.getRoot();
     }
+
 
     public void saveUserData(user_data data){
         //set variables of 'myObject', etc.

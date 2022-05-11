@@ -10,14 +10,17 @@
         <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.2203125" />
         <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/drawable/ic_baseline_place_24.xml" value="0.2203125" />
         <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/drawable/ic_baseline_qr_code_scanner_24.xml" value="0.2203125" />
+        <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/drawable/ic_baseline_web_24.xml" value="0.2203125" />
         <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2203125" />
         <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/drawable/ic_logo.xml" value="0.2203125" />
         <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/drawable/question_mark.xml" value="0.2203125" />
         <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/drawable/splash_screen.xml" value="0.2" />
         <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/drawable/white_border.xml" value="0.2203125" />
+        <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/layout/activity_add_transaction_hash.xml" value="0.33" />
         <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/layout/activity_main2.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/layout/activity_transcation.xml" value="0.12454710144927536" />
+        <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/layout/activity_transcation.xml" value="0.22" />
+        <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/layout/dialog_detail.xml" value="0.25" />
         <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/layout/fragment_add_places.xml" value="0.21" />
         <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/layout/fragment_camera.xml" value="0.18" />
         <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/layout/fragment_history_user.xml" value="0.33" />

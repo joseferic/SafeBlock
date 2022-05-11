@@ -42,6 +42,7 @@ public class HistoryUserFragment extends Fragment {
 
 
     public List<Data> listData;
+    public List<Data> listDataFiltered;
 
 
     @Override
@@ -56,11 +57,12 @@ public class HistoryUserFragment extends Fragment {
 
         // this is data from recycler view
         user_data user_data = getUserData();
-        getAllData(user_data.name);
-
+        if(user_data !=null){
+            getAllData(user_data.name);
+        }
 
         // 3. create an adapter
-        RecyclerViewAdapter mAdapter = new RecyclerViewAdapter(getContext(),listData);
+        RecyclerViewAdapter mAdapter = new RecyclerViewAdapter(getContext(),listDataFiltered);
         // 4. set adapter
         recyclerView.setAdapter(mAdapter);
         return rootView;
@@ -68,13 +70,14 @@ public class HistoryUserFragment extends Fragment {
 
     private void getAllData(String username){
         listData = new ArrayList<>();
+        listDataFiltered = new ArrayList<Data>();
         final Web3j web3j = Web3j.build(
                 new HttpService(
                         "https://rinkeby.infura.io/v3/d9100bd917c6448695785e26e5f0a095"
                 )
         );
 
-        String contractAddress = "0x2efd3Dc020D75f5Abf12C74F011aBB3Be8fc7f6C";
+        String contractAddress = "0xc5F8e80Dd0E58B182A5820B7063b413248039b58";
         String privateKey = "fd20f2be43dd3fa879826279c6067a18aa5b9a40d5ed7f6c2e672e4154876ba5";
 
         Credentials credentials = Credentials.create(privateKey);
@@ -93,7 +96,11 @@ public class HistoryUserFragment extends Fragment {
                         userData.users(BigInteger.valueOf(i)).sendAsync().get().component4(),
                         userData.users(BigInteger.valueOf(i)).sendAsync().get().component5(),
                         userData.users(BigInteger.valueOf(i)).sendAsync().get().component6(),
-                        userData.users(BigInteger.valueOf(i)).sendAsync().get().component7()
+                        userData.users(BigInteger.valueOf(i)).sendAsync().get().component7(),
+                        userData.users(BigInteger.valueOf(i)).sendAsync().get().component8(),
+                        userData.users(BigInteger.valueOf(i)).sendAsync().get().component9(),
+                        userData.users(BigInteger.valueOf(i)).sendAsync().get().component10()
+
                 );
                 Log.v("Data User On List ", nData.transaction_id.toString());
                 Log.v("Data User Detail ",userData.users(BigInteger.valueOf(i)).sendAsync().get().toString());
@@ -104,13 +111,16 @@ public class HistoryUserFragment extends Fragment {
             Log.v("Data List Sebelum Filter ", String.valueOf(listData.size()));
 
 
-            for (int i=0; i<listData.size(); i++){
-                if (listData.get(i).name != username){
-                    listData.remove(i);
+//!(data.get_transactionHash().equals("")
+            for (Data data : listData){
+                if (data.getName().equals(username)){
+                    listDataFiltered.add(data);
                 }
             }
-            Log.v("Data List Sesudah Filter", String.valueOf(listData));
-            Log.v("Data List Sesudah Filter ", String.valueOf(listData.size()));
+
+
+            Log.v("Data List Sesudah Filter", String.valueOf(listDataFiltered));
+            Log.v("Data List Sesudah Filter ", String.valueOf(listDataFiltered.size()));
         }catch (Throwable throwable){
             throwable.printStackTrace();
         }
@@ -122,8 +132,13 @@ public class HistoryUserFragment extends Fragment {
         SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         Gson gson = new Gson();
         String json = preferences.getString("Data", "");
-        user_data obj = gson.fromJson(json, user_data.class);
-        return obj;
+        if(!(json.isEmpty())){
+            user_data obj = gson.fromJson(json, user_data.class);
+            return obj;
+        }
+        else{
+            return null;
+        }
     }
 
     public PlaceData getPlace(){

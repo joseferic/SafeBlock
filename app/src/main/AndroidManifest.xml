@@ -19,6 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/ThemeSafeBlock">
         <activity
+            android:name=".AddTransactionHash"
+            android:exported="false" />
+        <activity
             android:name=".TranscationActivity"
             android:exported="false"
             android:label="@string/title_activity_transcation"

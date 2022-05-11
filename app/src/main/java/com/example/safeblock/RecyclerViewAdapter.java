@@ -1,12 +1,18 @@
 package com.example.safeblock;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -15,6 +21,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     Context context;
     List<Data> data;
+    Dialog dialog;
+
 
     public RecyclerViewAdapter(Context mContenxt, List<Data> mData){
         this.context = mContenxt;
@@ -27,6 +35,29 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         View v;
         v = LayoutInflater.from(context).inflate(R.layout.list_item,parent,false);
         MyViewHolder viewHolder = new MyViewHolder(v);
+
+        dialog = new Dialog(context);
+        dialog.setContentView(R.layout.dialog_detail);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+
+
+        viewHolder.item_history.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TextView dialog_place_name = dialog.findViewById(R.id.place_name_dialog);
+                TextView dialog_place_date = dialog.findViewById(R.id.place_visited_date_dialog);
+                Button dialog_button_etherscan = dialog.findViewById(R.id.button_see_on_etherscan);
+
+                dialog_place_name.setText(data.get(viewHolder.getAdapterPosition()).place_visited);
+                dialog_place_date.setText(data.get(viewHolder.getAdapterPosition()).time_visited);
+
+                Toast.makeText(context, "Test Click Item ke "+viewHolder.getAdapterPosition(),
+                        Toast.LENGTH_SHORT).show();
+
+                dialog.show();
+            }
+        });
 
         return viewHolder;
     }
@@ -45,12 +76,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
+        private ConstraintLayout item_history;
         private TextView tv_placeName;
         private TextView tv_date;
         private TextView tv_dateVisited;
 
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
+            item_history = itemView.findViewById(R.id.list_item_id);
+
             tv_placeName = itemView.findViewById(R.id.tv_title);
             //tv_date = itemView.findViewById(R.id.tv_date);
             tv_dateVisited = itemView.findViewById(R.id.tv_description);

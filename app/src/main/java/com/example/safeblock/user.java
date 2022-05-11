@@ -15,6 +15,9 @@ public class user extends DynamicStruct {
     public String email;
     public String place_visited;
     public String time_visited;
+    public String latitude;
+    public String longitude;
+    public String _transactionHash;
     public Boolean infected;
 
     public user(BigInteger transaction_id,
@@ -23,6 +26,9 @@ public class user extends DynamicStruct {
                 String email,
                 String place_visited,
                 String time_visited,
+                String latitude,
+                String longitude,
+                String _transactionHash,
                 Boolean infected){
         this.transaction_id = transaction_id;
         this._walletAddress = walletAddressresults;
@@ -30,6 +36,9 @@ public class user extends DynamicStruct {
         this.email = email;
         this.place_visited = place_visited;
         this.time_visited = time_visited;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this._transactionHash = _transactionHash;
         this.infected = infected;
     }
 }
