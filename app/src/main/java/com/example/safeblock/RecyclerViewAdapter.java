@@ -2,8 +2,11 @@ package com.example.safeblock;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +36,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v;
-        v = LayoutInflater.from(context).inflate(R.layout.list_item,parent,false);
+        v = LayoutInflater.from(context). inflate(R.layout.list_item,parent,false);
         MyViewHolder viewHolder = new MyViewHolder(v);
 
         dialog = new Dialog(context);
@@ -48,12 +51,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 TextView dialog_place_name = dialog.findViewById(R.id.place_name_dialog);
                 TextView dialog_place_date = dialog.findViewById(R.id.place_visited_date_dialog);
                 Button dialog_button_etherscan = dialog.findViewById(R.id.button_see_on_etherscan);
-
+                Log.d("Data List = ",data.get(viewHolder.getAdapterPosition()).toString());
                 dialog_place_name.setText(data.get(viewHolder.getAdapterPosition()).place_visited);
                 dialog_place_date.setText(data.get(viewHolder.getAdapterPosition()).time_visited);
 
-                Toast.makeText(context, "Test Click Item ke "+viewHolder.getAdapterPosition(),
-                        Toast.LENGTH_SHORT).show();
+                dialog_button_etherscan.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String s = "https://rinkeby.etherscan.io/tx/" + data.get(viewHolder.getAdapterPosition())._transactionHash;
+                        Uri uri = Uri.parse(s);
+                        context.startActivity(new Intent(Intent.ACTION_VIEW,uri));
+                    }
+                });
 
                 dialog.show();
             }

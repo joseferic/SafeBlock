@@ -1,9 +1,11 @@
 package com.example.safeblock;
 
 public class PlaceData {
+
     String PlaceName;
     Double Latitude;
     Double Longitude;
+
 
     public PlaceData(String PlaceName, Double Latitude, Double Longitude){
         this.PlaceName = PlaceName;

@@ -7,8 +7,6 @@
     tools:context=".AddTransactionHash">
 
 
-
-
     <TextView
         android:id="@+id/tv_title_confirm"
         android:layout_width="wrap_content"
