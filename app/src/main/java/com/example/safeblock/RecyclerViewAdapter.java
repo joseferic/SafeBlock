@@ -18,18 +18,24 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
 
     Context context;
     List<Data> data;
     Dialog dialog;
+    user_data UserData;
+    List<Data> otherUserData;
 
-
-    public RecyclerViewAdapter(Context mContenxt, List<Data> mData){
+    public RecyclerViewAdapter(Context mContenxt, List<Data> mData, user_data UserData, List<Data> otherListData){
         this.context = mContenxt;
         this.data = mData;
+        this.UserData = UserData;
+        this.otherUserData = otherListData;
     }
 
     @NonNull
@@ -51,6 +57,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 TextView dialog_place_name = dialog.findViewById(R.id.place_name_dialog);
                 TextView dialog_place_date = dialog.findViewById(R.id.place_visited_date_dialog);
                 Button dialog_button_etherscan = dialog.findViewById(R.id.button_see_on_etherscan);
+                Button dialog_button_sendEmail = dialog.findViewById(R.id.button_notifiy_other_user);
+
                 Log.d("Data List = ",data.get(viewHolder.getAdapterPosition()).toString());
                 dialog_place_name.setText(data.get(viewHolder.getAdapterPosition()).place_visited);
                 dialog_place_date.setText(data.get(viewHolder.getAdapterPosition()).time_visited);
@@ -64,11 +72,58 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     }
                 });
 
+                dialog_button_sendEmail.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (otherUserData.isEmpty()){
+                            Toast.makeText(context,"Tidak ada user yang mengunjungi tempat ini",Toast.LENGTH_LONG);
+                        }
+                        else{
+                            sendEmailtoOtherUser(UserData.email,data.get(viewHolder.getAdapterPosition()).place_visited, otherUserData);
+                        }
+                    }
+                });
+
                 dialog.show();
             }
         });
 
         return viewHolder;
+    }
+
+    public void sendEmailtoOtherUser(String emailUser,String placeName, List<Data> otherUserData){
+        List<Data> emailFilteredSamePlaces = new ArrayList<>();
+        for (int i=0; i<otherUserData.size(); i++){
+            if (otherUserData.get(i).place_visited.equals(placeName)){
+                emailFilteredSamePlaces.add(otherUserData.get(i));
+            }
+        }
+        Set<String> email = new HashSet<>();
+        for(final Data data: emailFilteredSamePlaces) {
+            email.add(data.email);
+        }
+
+        // construct a new List from Set
+
+        sendEmail(emailUser,placeName,email);
+    }
+
+    public void sendEmail(String emailUser,String placeName, Set<String> email){
+        String subject = "PERINGATAN APLIKASI SAFEBLOCK: APLIKASI CONTACT TRACING BERBASIS BLOCKCHAIN";
+        String message = "Peringatan: Seseorang dari tempat bernama " + placeName + " telah terinfeksi COVID-19."+
+                "\nDimohon segera untuk melakukan pengujian COVID-19 dan juga isolasi mandiri.";
+
+        String[] myArray = new String[email.size()];
+        email.toArray(myArray);
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_EMAIL,myArray);
+
+        intent.putExtra(Intent.EXTRA_SUBJECT,subject);
+        intent.putExtra(Intent.EXTRA_TEXT,message);
+
+        intent.setType("message/rfc822");
+        context.startActivity(Intent.createChooser(intent,"Mohon pilih aplikasi email"));
+
     }
 
     @Override

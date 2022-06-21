@@ -7,6 +7,7 @@
         <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/drawable/card_bg.xml" value="0.2203125" />
         <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/drawable/ic_b69a7fdb9737423da549c07a99aaee29.xml" value="0.2203125" />
         <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/drawable/ic_baseline_add_location_alt_24.xml" value="0.11354166666666667" />
+        <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/drawable/ic_baseline_email_24.xml" value="0.2203125" />
         <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.2203125" />
         <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/drawable/ic_baseline_place_24.xml" value="0.2203125" />
         <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/drawable/ic_baseline_qr_code_scanner_24.xml" value="0.2203125" />
@@ -23,8 +24,8 @@
         <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/layout/dialog_detail.xml" value="0.25" />
         <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/layout/fragment_add_places.xml" value="0.21" />
         <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/layout/fragment_camera.xml" value="0.18" />
-        <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/layout/fragment_history_user.xml" value="0.33" />
-        <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/layout/fragment_user_data.xml" value="0.1" />
+        <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/layout/fragment_history_user.xml" value="0.22" />
+        <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/layout/fragment_user_data.xml" value="0.33" />
         <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/layout/list_item.xml" value="0.4476987447698745" />
         <entry key="..\:/Users/josef/Desktop/Kuliah/Semester 8/SafeBlock/app/src/main/res/menu/bottom_nav_menu.xml" value="0.20416666666666666" />
       </map>

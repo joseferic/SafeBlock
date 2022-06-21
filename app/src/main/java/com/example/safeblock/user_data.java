@@ -13,13 +13,15 @@ public class user_data {
     public String email;
     public Boolean infected;
     public String picture;
+    public String password;
 
     public user_data(
             String name,
             String email,
             String walletAddressresults,
             Boolean infected,
-            String picture
+            String picture,
+            String password
     )
     {
         this._walletAddress = walletAddressresults;
@@ -27,6 +29,7 @@ public class user_data {
         this.email = email;
         this.infected = infected;
         this.picture = picture;
+        this.password = password;
     }
 
     @Override
@@ -36,6 +39,7 @@ public class user_data {
                 +", _walletAddress=" + _walletAddress
                 +", name=" + name
                 +", email=" + email
+                +", password=" + password
                 +", infected=" + infected
                 +", picture =" + picture + " ]";
     }

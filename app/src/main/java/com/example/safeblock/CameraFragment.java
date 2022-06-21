@@ -19,7 +19,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.safeblock.TranscationActivity;
 import com.example.safeblock.databinding.FragmentCameraBinding;
+import com.example.safeblock.user_data;
 import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -58,8 +60,11 @@ public class CameraFragment extends Fragment   {
             @Override
             public void onClick(View view) {
                 if(user_data !=null){
-                    if (user_data.picture.isEmpty() || user_data.infected == null){
+                    if (user_data.picture.equals("null") || user_data.infected == null){
                         Toast.makeText(getContext(),"Mohon lengkapi status dan sertai bukti hasil pemeriksaan lab Test Covid 19",Toast.LENGTH_LONG).show();
+                    }
+                    else if (user_data.infected.equals(true)){
+                        Toast.makeText(getContext(),"Mohon untuk tetap dirumah dan tidak memasuki tempat ini",Toast.LENGTH_LONG).show();
                     }
                     else {
                         scanQR();

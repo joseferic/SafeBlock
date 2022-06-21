@@ -40,32 +40,49 @@
         app:layout_constraintTop_toBottomOf="@+id/input_nama"
         app:met_floatingLabel="highlight" />
 
-    <com.rengwuxian.materialedittext.MaterialEditText
-        android:id="@+id/input_private_key"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:hint="Private Key"
-        android:inputType="text"
-        android:text="fd20f2be43dd3fa879826279c6067a18aa5b9a40d5ed7f6c2e672e4154876ba5"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_email"
-        app:met_floatingLabel="highlight" />
 
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/input_private_key"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:hint="Private Key"
+            android:inputType="text"
+            android:text="fd20f2be43dd3fa879826279c6067a18aa5b9a40d5ed7f6c2e672e4154876ba5"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/input_password_gmail"
+            app:met_floatingLabel="highlight" />
 
-        android:layout_marginTop="40dp"
-        app:layout_constraintHorizontal_bias="0.022"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_private_key" />
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/input_password_gmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:hint="Password Gmail"
+            android:inputType="textPassword"
+            android:text="Saya!Tidak@SukaVitamin#Abcde123$"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/input_email"
+            app:met_floatingLabel="highlight" />
 
-    <Button
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="36dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_inputStatusTerinfeksi"
+            app:layout_constraintTop_toBottomOf="@+id/input_private_key" />
+
+        <Button
         android:id="@+id/simpan_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -93,44 +110,56 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_private_key" />
 
-    <Button
-        android:id="@+id/addCovidTestResult"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
-        android:backgroundTint="@color/black"
+        <Button
+            android:id="@+id/addCovidTestResult"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="80dp"
+            android:backgroundTint="@color/black"
 
-        android:text="Tambahkan Gambar \n Hasil Test Covid"
-        android:textAllCaps="true"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_private_key" />
+            android:text="Tambahkan Gambar \n Hasil Test Covid"
+            android:textAllCaps="true"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/input_private_key" />
 
-    <TextView
+        <TextView
         android:id="@+id/tv_user_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Data User"
         android:textAlignment="textStart"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.072" />
 
-    <ImageView
-        android:id="@+id/imageViewTestResult"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="320dp"
+        <ImageView
+            android:id="@+id/imageViewTestResult"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="404dp"
 
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_user_data" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_user_data" />
+
+        <TextView
+            android:id="@+id/tv_inputStatusTerinfeksi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:textSize="16sp"
+            android:text="Status Terinfeksi"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/input_private_key" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

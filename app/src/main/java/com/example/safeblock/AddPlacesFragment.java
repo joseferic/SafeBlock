@@ -28,6 +28,8 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.example.safeblock.PlaceData;
+import com.example.safeblock.R;
 import com.example.safeblock.databinding.FragmentAddPlacesBinding;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;

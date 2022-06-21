@@ -15,7 +15,7 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
     <string-array name="TrueOrFalse">
-        <item>Positif</item>
         <item>Negatif</item>
+        <item>Positif</item>
     </string-array>
 </resources>

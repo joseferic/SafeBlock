@@ -69,7 +69,7 @@ public class AddTransactionHash extends AppCompatActivity {
                 )
         );
 
-        String contractAddress = "0x45FaAD5Aa2E382dce15c4e518eb301bfFdCc249e";
+        String contractAddress = "0x342673B9B479e8FFfcd8dE709f89f8EBaE111a1b";
         String privateKey = PrivateKey;
 
         Credentials credentials = Credentials.create(privateKey);

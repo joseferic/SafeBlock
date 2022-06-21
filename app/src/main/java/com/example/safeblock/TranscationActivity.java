@@ -41,13 +41,10 @@ public class TranscationActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
 
-        //user_data user_data = getUserData();
-        //PlaceData placeData = getPlace();
-        //String placeName = receiveData();
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date date = new Date();
-        //System.out.println(formatter.format(date));
+
         String dateFormatted = formatter.format(date);
 
         String[] Data = receiveData();
@@ -67,7 +64,7 @@ public class TranscationActivity extends AppCompatActivity {
             binding.tvConfirmLatlng.setVisibility(View.INVISIBLE);
             binding.buttonConfirm.setVisibility(View.INVISIBLE);
         }
-        //sendDatatoBlockChain("Josef Eric", "Rumah Josef Eric", dateFormatted, "This is latitude", "this is longitude");
+
         binding.buttonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -117,96 +114,9 @@ public class TranscationActivity extends AppCompatActivity {
         }
     }
 
-    private void sendDatatoBlockChain(String userName, String placeName, String dateFormatted, String Latitude, String Longitude,String email_data,String private_key_wallet_data_key,String status_data) {
-        Log.d(TAG, "sendDatatoBlockChain:");
 
 
-        final Web3j web3j = Web3j.build(
-                new HttpService(
-                        "https://rinkeby.infura.io/v3/d9100bd917c6448695785e26e5f0a095"
-                )
-        );
 
-        String contractAddress = "0xc5F8e80Dd0E58B182A5820B7063b413248039b58";
-        String privateKey = private_key_wallet_data_key;
-
-        Credentials credentials = Credentials.create(privateKey);
-        ContractGasProvider contractGasProvider = new DefaultGasProvider();
-        UserData_sol_UserData user_dataContract = UserData_sol_UserData
-                .load(contractAddress, web3j, credentials, contractGasProvider);
-
-        String userData = new Gson().toJson(new InputData(userName,email_data,privateKey,Boolean.parseBoolean(status_data), placeName,Double.parseDouble(Latitude),Double.parseDouble(Longitude),dateFormatted));
-
-        user_dataContract.create_user_data(userName, placeName, dateFormatted, Latitude, Longitude).flowable().subscribeOn(Schedulers.io()).subscribe(new Consumer<TransactionReceipt>() {
-            @Override
-            public void accept(TransactionReceipt transactionReceipt) throws Exception {
-                Log.d(TAG, "Transaction Recepit = " + transactionReceipt);
-                if ((transactionReceipt.getTransactionHash()) != null) {
-                    //binding.tvReceipt.setText(transactionReceipt.getTransactionHash());
-                    binding.progressBar.setVisibility(View.INVISIBLE);
-                    Log.d(TAG, "Transaction Hash = " + transactionReceipt.getTransactionHash());
-
-                    Intent intent = new Intent(TranscationActivity.this, AddTransactionHash.class);
-                    intent.putExtra("USER_NAME_KEY", userName);
-                    intent.putExtra("PLACE_NAME_KEY", placeName);
-                    intent.putExtra("TIME_KEY", dateFormatted);
-                    intent.putExtra("PLACE_LATITUDE_KEY", Latitude);
-                    intent.putExtra("PLACE_LONGITUDE_KEY", Longitude);
-                    intent.putExtra("TRANSACTION_HASH_KEY", transactionReceipt.getTransactionHash());
-                    startActivity(intent);
-                } else {
-                    //binding.tvReceipt.setText("NULL");
-                }
-            }
-        });
-
-
-    }
-
-    private void sendDatatoBlockChainOtherOld(String userName, String placeName, String dateFormatted, String Latitude, String Longitude,String email_data,String private_key_wallet_data_key,String status_data) {
-        Log.d(TAG, "sendDatatoBlockChain:");
-        binding.tvTitleConfirm.setText("DATA SAVED");
-        binding.buttonConfirm.setVisibility(View.INVISIBLE);
-
-
-        final Web3j web3j = Web3j.build(
-                new HttpService(
-                        "https://rinkeby.infura.io/v3/d9100bd917c6448695785e26e5f0a095"
-                )
-        );
-
-        String contractAddress = "0xc5F8e80Dd0E58B182A5820B7063b413248039b58";
-        String privateKey = private_key_wallet_data_key;
-
-        Credentials credentials = Credentials.create(privateKey);
-        ContractGasProvider contractGasProvider = new DefaultGasProvider();
-        UserData_sol_UserData user_dataContract = UserData_sol_UserData
-                .load(contractAddress, web3j, credentials, contractGasProvider);
-
-        String userData = new Gson().toJson(new InputData(userName,email_data,privateKey,Boolean.parseBoolean(status_data), placeName,Double.parseDouble(Latitude),Double.parseDouble(Longitude),dateFormatted));
-
-
-        TransactionReceipt transactionReceipt = user_dataContract.create_user_data(userName, placeName, dateFormatted, Latitude, Longitude).sendAsync().join();
-        Log.d(TAG, "Transaction Recepit = " + transactionReceipt);
-        if ((transactionReceipt.getTransactionHash()) != null) {
-            //binding.tvReceipt.setText(transactionReceipt.getTransactionHash());
-            binding.progressBar.setVisibility(View.INVISIBLE);
-            Log.d(TAG, "Transaction Hash = " + transactionReceipt.getTransactionHash());
-
-            Intent intent = new Intent(TranscationActivity.this, AddTransactionHash.class);
-            intent.putExtra("USER_NAME_KEY", userName);
-            intent.putExtra("PLACE_NAME_KEY", placeName);
-            intent.putExtra("TIME_KEY", dateFormatted);
-            intent.putExtra("PLACE_LATITUDE_KEY", Latitude);
-            intent.putExtra("PLACE_LONGITUDE_KEY", Longitude);
-            intent.putExtra("TRANSACTION_HASH_KEY", transactionReceipt.getTransactionHash());
-            startActivity(intent);
-
-        } else {
-
-        }
-
-    }
 
     private void sendDatatoBlockChainOther(String userName, String placeName, String dateFormatted, String Latitude, String Longitude,String email_data,String private_key_wallet_data_key,String status_data) {
         Log.d(TAG, "sendDatatoBlockChain:");
@@ -220,7 +130,7 @@ public class TranscationActivity extends AppCompatActivity {
                 )
         );
 
-        String contractAddress = "0x45FaAD5Aa2E382dce15c4e518eb301bfFdCc249e";
+        String contractAddress = "0x342673B9B479e8FFfcd8dE709f89f8EBaE111a1b";
         String privateKey = private_key_wallet_data_key;
 
         Credentials credentials = Credentials.create(privateKey);
@@ -229,9 +139,11 @@ public class TranscationActivity extends AppCompatActivity {
                 .load(contractAddress, web3j, credentials, contractGasProvider);
 
         String userData = new Gson().toJson(new InputData(userName,email_data,privateKey,Boolean.parseBoolean(status_data), placeName,Double.parseDouble(Latitude),Double.parseDouble(Longitude),dateFormatted));
+        String key = AES.encrypt(userName,"SafeBlockIsSafe");
+
         String encryptedString = AES.encrypt(userData,userName);
 
-        TransactionReceipt transactionReceipt = contract.createUserData(encryptedString).sendAsync().join();
+        TransactionReceipt transactionReceipt = contract.createUserData(encryptedString,key).sendAsync().join();
         Log.d(TAG, "Transaction Receipt = " + transactionReceipt);
         if ((transactionReceipt.getTransactionHash()) != null) {
             //binding.tvReceipt.setText(transactionReceipt.getTransactionHash());
@@ -254,6 +166,9 @@ public class TranscationActivity extends AppCompatActivity {
         }
 
     }
+
+}
+
 //    public user_data getUserData() {
 //        MainActivity mContext = new MainActivity();
 //        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext.getContext());
@@ -270,5 +185,91 @@ public class TranscationActivity extends AppCompatActivity {
 //        PlaceData obj_place = gson_place.fromJson(json_place_data, PlaceData.class);
 //        return obj_place;
 //    }
-
-}
+//    private void sendDatatoBlockChain(String userName, String placeName, String dateFormatted, String Latitude, String Longitude,String email_data,String private_key_wallet_data_key,String status_data) {
+//        Log.d(TAG, "sendDatatoBlockChain:");
+//
+//
+//        final Web3j web3j = Web3j.build(
+//                new HttpService(
+//                        "https://rinkeby.infura.io/v3/d9100bd917c6448695785e26e5f0a095"
+//                )
+//        );
+//
+//        String contractAddress = "0xc5F8e80Dd0E58B182A5820B7063b413248039b58";
+//        String privateKey = private_key_wallet_data_key;
+//
+//        Credentials credentials = Credentials.create(privateKey);
+//        ContractGasProvider contractGasProvider = new DefaultGasProvider();
+//        UserData_sol_UserData user_dataContract = UserData_sol_UserData
+//                .load(contractAddress, web3j, credentials, contractGasProvider);
+//
+//        String userData = new Gson().toJson(new InputData(userName,email_data,privateKey,Boolean.parseBoolean(status_data), placeName,Double.parseDouble(Latitude),Double.parseDouble(Longitude),dateFormatted));
+//
+//        user_dataContract.create_user_data(userName, placeName, dateFormatted, Latitude, Longitude).flowable().subscribeOn(Schedulers.io()).subscribe(new Consumer<TransactionReceipt>() {
+//            @Override
+//            public void accept(TransactionReceipt transactionReceipt) throws Exception {
+//                Log.d(TAG, "Transaction Recepit = " + transactionReceipt);
+//                if ((transactionReceipt.getTransactionHash()) != null) {
+//                    //binding.tvReceipt.setText(transactionReceipt.getTransactionHash());
+//                    binding.progressBar.setVisibility(View.INVISIBLE);
+//                    Log.d(TAG, "Transaction Hash = " + transactionReceipt.getTransactionHash());
+//
+//                    Intent intent = new Intent(TranscationActivity.this, AddTransactionHash.class);
+//                    intent.putExtra("USER_NAME_KEY", userName);
+//                    intent.putExtra("PLACE_NAME_KEY", placeName);
+//                    intent.putExtra("TIME_KEY", dateFormatted);
+//                    intent.putExtra("PLACE_LATITUDE_KEY", Latitude);
+//                    intent.putExtra("PLACE_LONGITUDE_KEY", Longitude);
+//                    intent.putExtra("TRANSACTION_HASH_KEY", transactionReceipt.getTransactionHash());
+//                    startActivity(intent);
+//                } else {
+//                    //binding.tvReceipt.setText("NULL");
+//                }
+//            }
+//        });
+//
+//   private void sendDatatoBlockChainOtherOld(String userName, String placeName, String dateFormatted, String Latitude, String Longitude,String email_data,String private_key_wallet_data_key,String status_data) {
+//        Log.d(TAG, "sendDatatoBlockChain:");
+//        binding.tvTitleConfirm.setText("DATA SAVED");
+//        binding.buttonConfirm.setVisibility(View.INVISIBLE);
+//
+//
+//        final Web3j web3j = Web3j.build(
+//                new HttpService(
+//                        "https://rinkeby.infura.io/v3/d9100bd917c6448695785e26e5f0a095"
+//                )
+//        );
+//
+//        String contractAddress = "0xc5F8e80Dd0E58B182A5820B7063b413248039b58";
+//        String privateKey = private_key_wallet_data_key;
+//
+//        Credentials credentials = Credentials.create(privateKey);
+//        ContractGasProvider contractGasProvider = new DefaultGasProvider();
+//        UserData_sol_UserData user_dataContract = UserData_sol_UserData
+//                .load(contractAddress, web3j, credentials, contractGasProvider);
+//
+//        String userData = new Gson().toJson(new InputData(userName,email_data,privateKey,Boolean.parseBoolean(status_data), placeName,Double.parseDouble(Latitude),Double.parseDouble(Longitude),dateFormatted));
+//
+//
+//        TransactionReceipt transactionReceipt = user_dataContract.create_user_data(userName, placeName, dateFormatted, Latitude, Longitude).sendAsync().join();
+//        Log.d(TAG, "Transaction Recepit = " + transactionReceipt);
+//        if ((transactionReceipt.getTransactionHash()) != null) {
+//            //binding.tvReceipt.setText(transactionReceipt.getTransactionHash());
+//            binding.progressBar.setVisibility(View.INVISIBLE);
+//            Log.d(TAG, "Transaction Hash = " + transactionReceipt.getTransactionHash());
+//
+//            Intent intent = new Intent(TranscationActivity.this, AddTransactionHash.class);
+//            intent.putExtra("USER_NAME_KEY", userName);
+//            intent.putExtra("PLACE_NAME_KEY", placeName);
+//            intent.putExtra("TIME_KEY", dateFormatted);
+//            intent.putExtra("PLACE_LATITUDE_KEY", Latitude);
+//            intent.putExtra("PLACE_LONGITUDE_KEY", Longitude);
+//            intent.putExtra("TRANSACTION_HASH_KEY", transactionReceipt.getTransactionHash());
+//            startActivity(intent);
+//
+//        } else {
+//
+//        }
+//
+//    }
+//    }

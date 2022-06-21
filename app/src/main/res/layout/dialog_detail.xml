@@ -45,7 +45,21 @@
             android:padding="20dp"
             android:textAlignment="textStart"
             android:drawablePadding="20dp"
+            />
 
+        <Button
+            android:id="@+id/button_notifiy_other_user"
+            android:drawableLeft="@drawable/ic_baseline_email_24"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#fff"
+            android:text="Notify Other User"
+            android:textColor="@color/black"
+            android:textAllCaps="false"
+            android:layout_gravity="start"
+            android:padding="20dp"
+            android:textAlignment="textStart"
+            android:drawablePadding="20dp"
             />
 
     </LinearLayout>
