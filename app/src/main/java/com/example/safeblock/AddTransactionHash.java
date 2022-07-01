@@ -47,8 +47,12 @@ public class AddTransactionHash extends AppCompatActivity {
         String EncryptedData = i.getStringExtra("ENCRYPTED_DATA_KEY");
         String PrivateKey = i.getStringExtra("PRIVATEKEY_DATA_KEY");
 
+try {
+    sendDataHashOther(userName, placeName, dateFormatted, Latitude, Longitude, transaction_hash_key,EncryptedData,PrivateKey);
+}catch (Throwable throwable){
+    throwable.printStackTrace();
+}
 
-        sendDataHashOther(userName, placeName, dateFormatted, Latitude, Longitude, transaction_hash_key,EncryptedData,PrivateKey);
         binding.buttonBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -17,7 +17,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.safeblock.AES;
@@ -60,9 +63,14 @@ public class HistoryUserFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.history_rv);
         Button btn_openHistory = rootView.findViewById(R.id.button_openhistory);
         ProgressBar progressBar = rootView.findViewById(R.id.progressBar);
+        ImageView imageViewDataNotAvailable = rootView.findViewById(R.id.imageViewDataNotAvailable);
+        TextView textViewDataNotAvailable = rootView.findViewById(R.id.tv_data);
+
 
         progressBar.setVisibility(View.INVISIBLE);
         recyclerView.setVisibility(View.INVISIBLE);
+        imageViewDataNotAvailable.setVisibility(View.INVISIBLE);
+        textViewDataNotAvailable.setVisibility(View.INVISIBLE);
         // 2. set layoutManger
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -77,12 +85,24 @@ public class HistoryUserFragment extends Fragment {
                 if (userData != null) {
                     getAllData(userData.name);
                 }
-                // 3. create an adapter
-                RecyclerViewAdapter mAdapter = new RecyclerViewAdapter(getContext(), listData,userData,otherUserListData);
-                // 4. set adapter
-                recyclerView.setAdapter(mAdapter);
-                recyclerView.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.INVISIBLE);
+                if (listData.isEmpty() || otherUserListData.isEmpty()){
+                    imageViewDataNotAvailable.setVisibility(View.VISIBLE);
+                    textViewDataNotAvailable.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.INVISIBLE);
+                    recyclerView.setVisibility(View.INVISIBLE);
+
+                    Toast.makeText(getContext(),"User belum pernah menginput data",Toast.LENGTH_LONG);
+                }
+                else{
+                    // 3. create an adapter
+                    RecyclerViewAdapter mAdapter = new RecyclerViewAdapter(getContext(), listData,userData,otherUserListData);
+                    // 4. set adapter
+                    recyclerView.setAdapter(mAdapter);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    imageViewDataNotAvailable.setVisibility(View.INVISIBLE);
+                    textViewDataNotAvailable.setVisibility(View.INVISIBLE);
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
             }
         });
         return rootView;

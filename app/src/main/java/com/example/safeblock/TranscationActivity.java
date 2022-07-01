@@ -40,8 +40,6 @@ public class TranscationActivity extends AppCompatActivity {
         binding = ActivityTranscationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
-
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date date = new Date();
 
@@ -69,7 +67,10 @@ public class TranscationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (Data != null && !(dateFormatted.isEmpty())) {
+                    binding.imageViewSendingData.setVisibility(View.VISIBLE);
+                    binding.tvSenddata.setVisibility(View.VISIBLE);
                     binding.progressBar.setVisibility(View.VISIBLE);
+
                     binding.tvTitleConfirm.setVisibility(View.INVISIBLE);
                     binding.tvConfirmName.setVisibility(View.INVISIBLE);
                     binding.tvConfirmPlace.setVisibility(View.INVISIBLE);
@@ -159,7 +160,12 @@ public class TranscationActivity extends AppCompatActivity {
             intent.putExtra("TRANSACTION_HASH_KEY", transactionReceipt.getTransactionHash());
             intent.putExtra("ENCRYPTED_DATA_KEY",encryptedString);
             intent.putExtra("PRIVATEKEY_DATA_KEY",privateKey);
+
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+            overridePendingTransition (0, 0);
+
 
         } else {
 

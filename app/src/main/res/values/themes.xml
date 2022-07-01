@@ -2,6 +2,7 @@
     <!-- Base application theme. -->
     <style name="ThemeSafeBlock" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
+        <item name="android:windowAnimationStyle">@null</item>
         <item name="colorPrimary">@color/black</item>
         <item name="colorPrimaryVariant">@color/black</item>
         <item name="colorOnPrimary">@color/white</item>
@@ -20,6 +21,7 @@
     </style>
 
     <style name="ThemeSafeBlock.NoActionBar">
+        <item name="android:windowAnimationStyle">@null</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
