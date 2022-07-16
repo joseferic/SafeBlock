@@ -17,20 +17,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.example.safeblock.AES;
-import com.example.safeblock.Data;
-import com.example.safeblock.InputData;
-import com.example.safeblock.R;
-import com.example.safeblock.RecyclerViewAdapter;
-import com.example.safeblock.SafeBlock_sol_SafeBlock;
 import com.example.safeblock.databinding.FragmentHistoryUserBinding;
-import com.example.safeblock.user_data;
 import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -63,13 +55,10 @@ public class HistoryUserFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.history_rv);
         Button btn_openHistory = rootView.findViewById(R.id.button_openhistory);
         ProgressBar progressBar = rootView.findViewById(R.id.progressBar);
-        ImageView imageViewDataNotAvailable = rootView.findViewById(R.id.imageViewDataNotAvailable);
+
         TextView textViewDataNotAvailable = rootView.findViewById(R.id.tv_data);
-
-
         progressBar.setVisibility(View.INVISIBLE);
         recyclerView.setVisibility(View.INVISIBLE);
-        imageViewDataNotAvailable.setVisibility(View.INVISIBLE);
         textViewDataNotAvailable.setVisibility(View.INVISIBLE);
         // 2. set layoutManger
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -85,8 +74,9 @@ public class HistoryUserFragment extends Fragment {
                 if (userData != null) {
                     getAllData(userData.name);
                 }
-                if (listData.isEmpty() || otherUserListData.isEmpty()){
-                    imageViewDataNotAvailable.setVisibility(View.VISIBLE);
+                Log.v("Data = ",listData.toString());
+                if (listData.isEmpty() && otherUserListData.isEmpty()){
+
                     textViewDataNotAvailable.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.INVISIBLE);
                     recyclerView.setVisibility(View.INVISIBLE);
@@ -99,7 +89,7 @@ public class HistoryUserFragment extends Fragment {
                     // 4. set adapter
                     recyclerView.setAdapter(mAdapter);
                     recyclerView.setVisibility(View.VISIBLE);
-                    imageViewDataNotAvailable.setVisibility(View.INVISIBLE);
+
                     textViewDataNotAvailable.setVisibility(View.INVISIBLE);
                     progressBar.setVisibility(View.INVISIBLE);
                 }
@@ -119,18 +109,23 @@ public class HistoryUserFragment extends Fragment {
                 )
         );
 
-        String contractAddress = "0x342673B9B479e8FFfcd8dE709f89f8EBaE111a1b";
-        String privateKey = userData._walletAddress;
+        String contractAddress = "0x7530003161c4F2dcA9Ff994144Fa4fCC5a2d57F2";
+        String privateKey = userData.privateKey;
 
         Credentials credentials = Credentials.create(privateKey);
         ContractGasProvider contractGasProvider = new DefaultGasProvider();
-        SafeBlock_sol_SafeBlock contract = SafeBlock_sol_SafeBlock.load(contractAddress, web3j, credentials, contractGasProvider);
+        NewSafeBlock_sol_NewSafeBlock contract = NewSafeBlock_sol_NewSafeBlock.load(contractAddress, web3j, credentials, contractGasProvider);
         try {
             //userData.create_user_data("Josef Eric","Test Place",formatter.format(date)).sendAsync().get();
             Log.v("Data length list", contract.getDataListLength().sendAsync().get().toString());
             Integer list_length = Integer.valueOf(contract.getDataListLength().sendAsync().get().toString());
+            Log.v("Data =", contract.data(BigInteger.valueOf(0)).sendAsync().get().component1());
+            Log.v("Data =", contract.data(BigInteger.valueOf(0)).sendAsync().get().component2());
+            Log.v("Data =", contract.data(BigInteger.valueOf(0)).sendAsync().get().component3());
+            Log.v("Data =", contract.data(BigInteger.valueOf(0)).sendAsync().get().component4());
+            //Log.v("Data =", contract.data(BigInteger.valueOf(0)).sendAsync().get().component5());
+            for (int i = 0; i < list_length; i++) {
 
-            for (int i = 4; i < list_length; i++) {
                 String data = contract.data(BigInteger.valueOf(i)).sendAsync().get().component2();
                 Log.v("History User Progres: data = ", data);
                 String dataKey = contract.data(BigInteger.valueOf(i)).sendAsync().get().component3();
@@ -149,7 +144,7 @@ public class HistoryUserFragment extends Fragment {
                 if (inputData != null) {
                     if (inputData.UserName.equals(username) && !(transaction_hash.equals(""))) {
                         Data nData = new Data(
-                                BigInteger.valueOf(i + 1 - 4),
+                                BigInteger.valueOf(i + 1),
                                 transaction_hash,
                                 inputData.PrivateKey,
                                 inputData.UserName,
@@ -173,7 +168,7 @@ public class HistoryUserFragment extends Fragment {
             Log.v("Data List Place Name String", placeName.toString());
 
             Integer new_list_length = Integer.valueOf(contract.getDataListLength().sendAsync().get().toString());
-            for (int i = 4; i < new_list_length; i++) {
+            for (int i = 0; i < new_list_length; i++) {
                 String data = contract.data(BigInteger.valueOf(i)).sendAsync().get().component2();
                 String dataKey = contract.data(BigInteger.valueOf(i)).sendAsync().get().component3();
                 // Log.v("dataKey = ", dataKey);
@@ -282,7 +277,7 @@ public class HistoryUserFragment extends Fragment {
 //    }
 
 //    private void getAllDataOld(String username){
-//        listData = new ArrayList<>();
+//        listAdmin = new ArrayList<>();
 //        //listDataFiltered = new ArrayList<Data>();
 //        final Web3j web3j = Web3j.build(
 //                new HttpService(
@@ -317,18 +312,18 @@ public class HistoryUserFragment extends Fragment {
 //                            userData.users(BigInteger.valueOf(i)).sendAsync().get().component9(),
 //                            userData.users(BigInteger.valueOf(i)).sendAsync().get().component10()
 //                    );
-//                    Log.v("Data User On List ", nData.transaction_id.toString());
+//                    Log.v("Data User On List ", nData.testId.toString());
 //                    Log.v("Data User Detail ",userData.users(BigInteger.valueOf(i)).sendAsync().get().toString());
-//                    listData.add(nData);
+//                    listAdmin.add(nData);
 //                }
 //            }
 //
-//            Log.v("Data List Filtered", String.valueOf(listData));
-//            Log.v("Data List Filtered ", String.valueOf(listData.size()));
+//            Log.v("Data List Filtered", String.valueOf(listAdmin));
+//            Log.v("Data List Filtered ", String.valueOf(listAdmin.size()));
 
 
 //!(data.get_transactionHash().equals("")
-//            for (Data data : listData){
+//            for (Data data : listAdmin){
 //                if (data.getName().equals(username) && !(data.get_transactionHash().equals(""))){
 //                    listDataFiltered.add(data);
 //                }

@@ -73,12 +73,12 @@ try {
                 )
         );
 
-        String contractAddress = "0x342673B9B479e8FFfcd8dE709f89f8EBaE111a1b";
+        String contractAddress = "0x7530003161c4F2dcA9Ff994144Fa4fCC5a2d57F2";
         String privateKey = PrivateKey;
 
         Credentials credentials = Credentials.create(privateKey);
         ContractGasProvider contractGasProvider = new DefaultGasProvider();
-        SafeBlock_sol_SafeBlock contract = SafeBlock_sol_SafeBlock
+        NewSafeBlock_sol_NewSafeBlock contract = NewSafeBlock_sol_NewSafeBlock
                 .load(contractAddress, web3j, credentials, contractGasProvider);
 
 

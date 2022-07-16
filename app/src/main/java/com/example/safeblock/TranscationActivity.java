@@ -77,6 +77,7 @@ public class TranscationActivity extends AppCompatActivity {
                     binding.tvConfirmTime.setVisibility(View.INVISIBLE);
                     binding.tvConfirmLatlng.setVisibility(View.INVISIBLE);
                     binding.buttonConfirm.setVisibility(View.INVISIBLE);
+
                     sendDatatoBlockChainOther(Data[0], Data[1], dateFormatted, Data[2], Data[3],Data[4],Data[5],Data[6]);
                 } else {
 
@@ -115,9 +116,59 @@ public class TranscationActivity extends AppCompatActivity {
         }
     }
 
-
-
-
+//    private void sendDatatoBlockChainOther(String userName, String placeName, String dateFormatted, String Latitude, String Longitude,String email_data,String private_key_wallet_data_key,String status_data) {
+//        Log.d(TAG, "sendDatatoBlockChain:");
+//        binding.tvTitleConfirm.setText("DATA SAVED");
+//        binding.buttonConfirm.setVisibility(View.INVISIBLE);
+//
+//
+//        final Web3j web3j = Web3j.build(
+//                new HttpService(
+//                        "https://rinkeby.infura.io/v3/d9100bd917c6448695785e26e5f0a095"
+//                )
+//        );
+//
+//        String contractAddress = "0x342673B9B479e8FFfcd8dE709f89f8EBaE111a1b";
+//        String privateKey = private_key_wallet_data_key;
+//
+//        Credentials credentials = Credentials.create(privateKey);
+//        ContractGasProvider contractGasProvider = new DefaultGasProvider();
+//        SafeBlock_sol_SafeBlock contract = SafeBlock_sol_SafeBlock
+//                .load(contractAddress, web3j, credentials, contractGasProvider);
+//
+//        String userData = new Gson().toJson(new InputData(userName,email_data,privateKey,Boolean.parseBoolean(status_data), placeName,Double.parseDouble(Latitude),Double.parseDouble(Longitude),dateFormatted));
+//        String key = AES.encrypt(userName,"SafeBlockIsSafe");
+//
+//        String encryptedString = AES.encrypt(userData,userName);
+//
+//        TransactionReceipt transactionReceipt = contract.createUserData(encryptedString,key).sendAsync().join();
+//        Log.d(TAG, "Transaction Receipt = " + transactionReceipt);
+//        if ((transactionReceipt.getTransactionHash()) != null) {
+//            //binding.tvReceipt.setText(transactionReceipt.getTransactionHash());
+//            binding.progressBar.setVisibility(View.INVISIBLE);
+//            Log.d(TAG, "Transaction Hash = " + transactionReceipt.getTransactionHash());
+//
+//            Intent intent = new Intent(TranscationActivity.this, AddTransactionHash.class);
+//            intent.putExtra("USER_NAME_KEY", userName);
+//            intent.putExtra("PLACE_NAME_KEY", placeName);
+//            intent.putExtra("TIME_KEY", dateFormatted);
+//            intent.putExtra("PLACE_LATITUDE_KEY", Latitude);
+//            intent.putExtra("PLACE_LONGITUDE_KEY", Longitude);
+//            intent.putExtra("TRANSACTION_HASH_KEY", transactionReceipt.getTransactionHash());
+//            intent.putExtra("ENCRYPTED_DATA_KEY",encryptedString);
+//            intent.putExtra("PRIVATEKEY_DATA_KEY",privateKey);
+//
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            startActivity(intent);
+//            overridePendingTransition (0, 0);
+//
+//
+//        } else {
+//
+//        }
+//
+//    }
 
     private void sendDatatoBlockChainOther(String userName, String placeName, String dateFormatted, String Latitude, String Longitude,String email_data,String private_key_wallet_data_key,String status_data) {
         Log.d(TAG, "sendDatatoBlockChain:");
@@ -131,12 +182,12 @@ public class TranscationActivity extends AppCompatActivity {
                 )
         );
 
-        String contractAddress = "0x342673B9B479e8FFfcd8dE709f89f8EBaE111a1b";
+        String contractAddress = "0x7530003161c4F2dcA9Ff994144Fa4fCC5a2d57F2";
         String privateKey = private_key_wallet_data_key;
 
         Credentials credentials = Credentials.create(privateKey);
         ContractGasProvider contractGasProvider = new DefaultGasProvider();
-        SafeBlock_sol_SafeBlock contract = SafeBlock_sol_SafeBlock
+        NewSafeBlock_sol_NewSafeBlock contract = NewSafeBlock_sol_NewSafeBlock
                 .load(contractAddress, web3j, credentials, contractGasProvider);
 
         String userData = new Gson().toJson(new InputData(userName,email_data,privateKey,Boolean.parseBoolean(status_data), placeName,Double.parseDouble(Latitude),Double.parseDouble(Longitude),dateFormatted));
@@ -144,7 +195,7 @@ public class TranscationActivity extends AppCompatActivity {
 
         String encryptedString = AES.encrypt(userData,userName);
 
-        TransactionReceipt transactionReceipt = contract.createUserData(encryptedString,key).sendAsync().join();
+        TransactionReceipt transactionReceipt = contract.createUserData(encryptedString,key,userName).sendAsync().join();
         Log.d(TAG, "Transaction Receipt = " + transactionReceipt);
         if ((transactionReceipt.getTransactionHash()) != null) {
             //binding.tvReceipt.setText(transactionReceipt.getTransactionHash());

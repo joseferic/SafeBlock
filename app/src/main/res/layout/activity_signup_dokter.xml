@@ -4,14 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DeveloperModeActivity">
+    android:padding="16dp"
+    tools:context=".SignupDokterActivity">
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Developer Mode"
+        android:text="Daftar Dokter"
         android:textAllCaps="true"
         android:textColor="@color/black"
         android:textSize="36sp"
@@ -28,34 +29,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Input Admin Baru"
+        android:text="Input Data Dokter Baru"
         android:textAllCaps="false"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.063"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.167" />
+        app:layout_constraintVertical_bias="0.169" />
 
     <TextView
         android:id="@+id/tv_seeListAdmin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Lihat List Admin Terdaftar"
+        android:text="Lihat List Dokter Terdaftar"
         android:textAllCaps="false"
         android:textColor="#0000FF"
-        android:textSize="13sp"
+        android:textSize="14sp"
+
+        android:textStyle="bold"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.804"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.846"
+        app:layout_constraintStart_toEndOf="@+id/tv_InputAdmin"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.178" />
+        app:layout_constraintVertical_bias="0.173" />
 
     <com.rengwuxian.materialedittext.MaterialEditText
         android:id="@+id/input_namaAdmin"
@@ -63,9 +66,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="168dp"
         android:gravity="start"
-        android:hint="Nama Admin"
+        android:hint="Nama Dokter"
         android:inputType="textPersonName"
-        android:text="Admin 1"
+        android:text="Dr. Octo"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -96,7 +99,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:gravity="start"
-        android:hint="Password Admin Baru"
+        android:hint="Password Dokter Baru"
 
         android:inputType="textPassword"
         android:text="password123"
@@ -107,30 +110,49 @@
         app:layout_constraintTop_toBottomOf="@+id/input_public_addressAdmin"
         app:met_floatingLabel="highlight" />
 
-    <Button
-        android:id="@+id/btn_checkAdmin"
-        android:layout_width="wrap_content"
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/input_private_key"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:backgroundTint="@color/black"
-        android:text="Check Admin"
-        android:textAllCaps="true"
+        android:layout_marginTop="16dp"
+        android:gravity="start"
+
+        android:hint="Private Key"
+        android:inputType="text"
+        android:text="fd20f2be43dd3fa879826279c6067a18aa5b9a40d5ed7f6c2e672e4154876ba5"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_public_password" />
+        app:layout_constraintTop_toBottomOf="@+id/input_public_password"
+        app:met_floatingLabel="highlight" />
 
     <Button
-        android:id="@+id/btn_addNewAdmin"
+        android:id="@+id/btn_checkDokter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:backgroundTint="@color/black"
+        android:text="Check Dokter"
+        android:textAllCaps="true"
+        android:textSize="16sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_private_key" />
+
+    <Button
+        android:id="@+id/btn_addNewDokter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="132dp"
         android:backgroundTint="@color/black"
-        android:text="Add New Admin"
+        android:text="Daftar"
         android:textAllCaps="true"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_public_password" />
 
@@ -138,23 +160,23 @@
         android:id="@+id/imgView_check"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="132dp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.485"
-        app:layout_constraintStart_toEndOf="@+id/btn_checkAdmin"
+        app:layout_constraintHorizontal_bias="0.64"
+        app:layout_constraintStart_toEndOf="@+id/btn_checkDokter"
         app:layout_constraintTop_toBottomOf="@+id/input_public_password"
         app:srcCompat="@drawable/ic_baseline_check_24" />
 
     <ImageView
         android:id="@+id/imgView_checkTransaction"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="64dp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btn_checkAdmin"
+        app:layout_constraintStart_toEndOf="@+id/btn_checkDokter"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_StateTransaction"
         app:srcCompat="@drawable/ic_baseline_check_24" />
@@ -173,7 +195,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_checkAdmin" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_checkDokter" />
 
     <TextView
         android:id="@+id/tv_StateTransaction"
@@ -188,6 +210,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_addNewAdmin" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_addNewDokter" />
+
+    <TextView
+        android:id="@+id/tv_loginDokter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:text="Login Dokter"
+        android:textAllCaps="false"
+        android:textColor="#0000FF"
+        android:textSize="14sp"
+
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_State" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

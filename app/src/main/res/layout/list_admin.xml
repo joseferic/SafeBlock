@@ -48,7 +48,7 @@
             android:lineSpacingExtra="8dp"
             android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
             android:textColor="@color/black"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
 <!--        <TextView-->
 <!--            android:id="@+id/tv_date"-->
@@ -70,7 +70,7 @@
         android:id="@+id/img_user"
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:src="@drawable/ic_baseline_place_24"
+        android:src="@drawable/ic_baseline_admin"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

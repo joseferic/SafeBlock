@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="500dp"
+    android:layout_gravity="center">
+
+    <LinearLayout
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/place_name_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Admin Name"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginTop="90dp"/>
+
+        <TextView
+            android:id="@+id/place_visited_date_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="Address"
+            android:textColor="@color/white"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp"/>
+
+
+        <Button
+            android:id="@+id/button_change_user_status"
+            android:drawableLeft="@drawable/ic_baseline_web_24"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#fff"
+            android:text="Change User Status"
+            android:textColor="@color/black"
+            android:textAllCaps="false"
+            android:layout_gravity="start"
+            android:padding="20dp"
+            android:textAlignment="textStart"
+            android:drawablePadding="20dp"
+            />
+
+        <Button
+            android:id="@+id/button_hapus_data_user"
+            android:drawableLeft="@drawable/ic_baseline_web_24"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#fff"
+            android:text="Delete User Data"
+            android:textColor="@color/black"
+            android:textAllCaps="false"
+            android:layout_gravity="start"
+            android:padding="20dp"
+            android:textAlignment="textStart"
+            android:drawablePadding="20dp"
+            />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

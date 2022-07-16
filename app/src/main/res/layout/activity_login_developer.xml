@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".LoginDeveloperActivity">
 
     <TextView
@@ -34,23 +35,38 @@
         android:text="Saya Developer Password 123"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_checkDeveloper"
+        app:layout_constraintTop_toBottomOf="@+id/input_private_key_developer"
         app:met_floatingLabel="highlight" />
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/input_private_key_developer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:gravity="start"
+        android:hint="Private Key Developer"
+        android:inputType="text"
+        android:text="8b8b105e6f96b7a230239d87d40e0aa96fb45f41f6f1b901b78c827e28648721"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.468"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_public_address"
+        app:met_floatingLabel="highlight" />
+
 
     <com.rengwuxian.materialedittext.MaterialEditText
         android:id="@+id/input_nama"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="108dp"
+        android:layout_marginTop="180dp"
         android:gravity="start"
         android:hint="Nama Developer"
         android:inputType="textPersonName"
         android:text="Josef Eric"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:met_floatingLabel="highlight" />
@@ -59,22 +75,22 @@
         android:id="@+id/btn_checkDeveloper"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="212dp"
         android:backgroundTint="@color/black"
         android:text="Check"
         android:textAllCaps="true"
         android:textSize="16sp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_public_address" />
-
 
     <Button
         android:id="@+id/btn_DeveloperMode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="444dp"
+        android:layout_marginTop="524dp"
         android:backgroundTint="@color/black"
         android:text="Developer Mode"
         android:textAllCaps="true"
@@ -104,10 +120,10 @@
         android:id="@+id/imgView_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="284dp"
+        android:layout_marginTop="580dp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.71"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_check_24" />
@@ -118,7 +134,7 @@
     <!--        android:layout_height="wrap_content"-->
     <!--        android:layout_marginTop="24dp"-->
     <!--        android:gravity="start"-->
-    <!--        android:hint="Nama Admin"-->
+    <!--        android:hint="Nama Dokter"-->
     <!--        android:inputType="textPersonName"-->
     <!--        android:text="Josef Eric"-->
     <!--        android:textSize="16sp"-->
@@ -151,7 +167,7 @@
     <!--        android:layout_height="wrap_content"-->
     <!--        android:layout_marginTop="24dp"-->
     <!--        android:backgroundTint="@color/black"-->
-    <!--        android:text="Check Admin"-->
+    <!--        android:text="Check Dokter"-->
     <!--        android:textAllCaps="true"-->
     <!--        android:textSize="16sp"-->
     <!--        app:layout_constraintEnd_toEndOf="parent"-->
@@ -165,7 +181,7 @@
     <!--        android:layout_height="wrap_content"-->
     <!--        android:layout_marginTop="24dp"-->
     <!--        android:backgroundTint="@color/black"-->
-    <!--        android:text="Admin Mode"-->
+    <!--        android:text="Dokter Mode"-->
     <!--        android:textAllCaps="true"-->
     <!--        android:textSize="16sp"-->
     <!--        app:layout_constraintEnd_toEndOf="parent"-->

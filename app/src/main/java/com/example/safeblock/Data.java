@@ -119,9 +119,8 @@ public class Data {
     @Override
     public String toString() {
         return getClass().getSimpleName()
-                + "[transaction_id = " + transaction_id
-                +", _transactionHash = " + _transactionHash
-                +", _walletAddress = " + _walletAddress
+                +" [transactionHash = " + _transactionHash
+                +", privateKey = " + _walletAddress
                 +", name = " + name
                 +", email = " + email
                 +", place_visited= " + place_visited

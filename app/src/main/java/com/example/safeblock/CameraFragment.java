@@ -1,16 +1,13 @@
 package com.example.safeblock;
 
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -19,28 +16,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.safeblock.TranscationActivity;
 import com.example.safeblock.databinding.FragmentCameraBinding;
-import com.example.safeblock.user_data;
 import com.google.gson.Gson;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
-
-import org.web3j.crypto.Credentials;
-import org.web3j.protocol.Web3j;
-import org.web3j.protocol.core.methods.response.TransactionReceipt;
-import org.web3j.protocol.http.HttpService;
-import org.web3j.tx.gas.ContractGasProvider;
-import org.web3j.tx.gas.DefaultGasProvider;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.concurrent.CompletableFuture;
-
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 
 public class CameraFragment extends Fragment   {
@@ -60,7 +39,8 @@ public class CameraFragment extends Fragment   {
             @Override
             public void onClick(View view) {
                 if(user_data !=null){
-                    if (user_data.picture.equals("null") || user_data.infected == null){
+                    //user_data.picture.equals("null") || user_data.infected == null
+                    if (user_data.infected == null){
                         Toast.makeText(getContext(),"Mohon lengkapi status dan sertai bukti hasil pemeriksaan lab Test Covid 19",Toast.LENGTH_LONG).show();
                     }
                     else if (user_data.infected.equals(true)){
@@ -68,6 +48,8 @@ public class CameraFragment extends Fragment   {
                     }
                     else {
                         scanQR();
+//                        String placeData = new Gson().toJson(new PlaceData("Rumah Makan Padang",-6.4805287,106.873719));
+//                        sendData(user_data.name,placeData,"joseferic1@gmail.com",user_data.privateKey,false);
                     }
                 }
                 else{
@@ -106,7 +88,7 @@ public class CameraFragment extends Fragment   {
                     Log.d(TAG, String.valueOf((result.getContents()!=null)));
                     //binding.tvCameraFragment.setText(result.getContents());
 
-                    sendData(getUserData().name,result.getContents(),getUserData().email,getUserData()._walletAddress,getUserData().infected);
+                    sendData(getUserData().name,result.getContents(),getUserData().email,getUserData().privateKey,getUserData().infected);
 
                     //sendDatatoBlockchain(getUserData().name,result.getContents());
                 }
@@ -115,7 +97,7 @@ public class CameraFragment extends Fragment   {
     // Launch
     public void scanQR() {
         ScanOptions options = new ScanOptions();
-        options.setPrompt("Scan a barcode");
+        options.setPrompt("Scan Kode QR");
         options.setCameraId(0);  // Use a specific camera of the device
         options.setBeepEnabled(false);
         options.setBarcodeImageEnabled(true);

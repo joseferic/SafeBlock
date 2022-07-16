@@ -54,7 +54,8 @@ public class LoginDeveloperActivity extends AppCompatActivity {
                 String password = binding.inputPasswordDeveloper.getText().toString().trim();
                 Boolean login = loginDeveloper(name,address,password);
                 if(login == true){
-                    Intent intent = new Intent(LoginDeveloperActivity.this, DeveloperModeActivity.class);
+
+                    Intent intent = new Intent(LoginDeveloperActivity.this, SignupDokterActivity.class);
                     startActivity(intent);
                 }
                 else{

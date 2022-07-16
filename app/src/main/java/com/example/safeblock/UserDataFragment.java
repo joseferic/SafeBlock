@@ -12,8 +12,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,26 +28,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.safeblock.R;
 import com.example.safeblock.databinding.FragmentUserDataBinding;
-import com.example.safeblock.user_data;
-import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
-import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.http.HttpService;
+import org.web3j.tuples.generated.Tuple2;
 import org.web3j.tx.gas.ContractGasProvider;
 import org.web3j.tx.gas.DefaultGasProvider;
-
-import java.io.IOException;
 
 
 public class UserDataFragment extends Fragment {
@@ -61,6 +51,7 @@ public class UserDataFragment extends Fragment {
     public Uri uriPictureTestResult;
     private FragmentUserDataBinding binding;
     private Boolean Hide;
+    private static final String TAG = "UserDataFragment ";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,11 +65,12 @@ public class UserDataFragment extends Fragment {
         binding.inputEmail.setVisibility(View.VISIBLE);
         binding.inputPrivateKey.setVisibility(View.VISIBLE);
         binding.simpanButton.setVisibility(View.VISIBLE);
-        binding.spinner.setVisibility(View.VISIBLE);
+//        binding.spinner.setVisibility(View.VISIBLE);
         binding.addCovidTestResult.setVisibility(View.VISIBLE);
-        binding.imageViewTestResult.setVisibility(View.VISIBLE);
+//        binding.imageViewTestResult.setVisibility(View.VISIBLE);
       //  binding.inputPasswordGmail.setVisibility(View.VISIBLE);
         binding.tvInputStatusTerinfeksi.setVisibility(View.VISIBLE);
+
 
         binding.addCovidTestResult.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +78,16 @@ public class UserDataFragment extends Fragment {
                 Intent iGallery = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 iGallery.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(iGallery, GALLERY_REQ_CODE);
+            }
+        });
+
+        binding.payCovidTestResult.setVisibility(View.INVISIBLE);
+        binding.payCovidTestResult.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), ListDokterActivity.class);
+                intent.putExtra("User",userData);
+                startActivity(intent);
             }
         });
 
@@ -101,9 +103,9 @@ public class UserDataFragment extends Fragment {
 //                    binding.imageViewTestResult.setImageURI(Uri.parse(userData.picture));
 //                }
                 binding.tvUserData.setVisibility(View.VISIBLE);
-                binding.imageViewTestResult.setVisibility(View.VISIBLE);
+//                binding.imageViewTestResult.setVisibility(View.VISIBLE);
                 if (userData.infected == true){
-                    status = "Positif";
+                    status = "Positif COVID-19";
                 }
                 else if (userData.infected == false){
                     status = "Negatif";
@@ -114,10 +116,13 @@ public class UserDataFragment extends Fragment {
                 binding.tvUserData.setText(
                         "Nama User = " + userData.name +
                                 "\n\nEmail User = " + userData.email +
-                                "\n\nWallet User = " + userData._walletAddress +
+                                "\n\nWallet User = " + userData.privateKey +
                                 "\n\nStatus: " + status);
-                binding.spinner.setVisibility(View.INVISIBLE);
+//                binding.spinner.setVisibility(View.INVISIBLE);
+                binding.tvHasilStatusTerinfeksi.setVisibility(View.INVISIBLE);
                 binding.addCovidTestResult.setVisibility(View.INVISIBLE);
+                binding.payCovidTestResult.setVisibility(View.VISIBLE);
+
             } else if (userData == null) {
                 binding.tvUserData.setVisibility(View.INVISIBLE);
 
@@ -129,7 +134,8 @@ public class UserDataFragment extends Fragment {
            // binding.inputPasswordGmail.setVisibility(View.INVISIBLE);
             binding.tvInputStatusTerinfeksi.setVisibility(View.INVISIBLE);
 
-            binding.imageViewTestResult.setVisibility(View.VISIBLE);
+
+//            binding.imageViewTestResult.setVisibility(View.VISIBLE);
 
             binding.backButton.setText("Input Data");
 
@@ -141,9 +147,9 @@ public class UserDataFragment extends Fragment {
            // binding.inputPasswordGmail.setVisibility(View.VISIBLE);
             binding.tvInputStatusTerinfeksi.setVisibility(View.VISIBLE);
 
-            binding.spinner.setVisibility(View.VISIBLE);
+//            binding.spinner.setVisibility(View.VISIBLE);
             binding.simpanButton.setVisibility(View.VISIBLE);
-            binding.imageViewTestResult.setVisibility(View.VISIBLE);
+//            binding.imageViewTestResult.setVisibility(View.VISIBLE);
             binding.backButton.setText("Back");
         } else {
             Toast.makeText(getContext(), "stateDataSaved = null", Toast.LENGTH_LONG).show();
@@ -152,30 +158,28 @@ public class UserDataFragment extends Fragment {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.TrueOrFalse, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinner.setAdapter(adapter);
-        binding.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                String text = adapterView.getItemAtPosition(position).toString();
-                //Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+//        binding.spinner.setAdapter(adapter);
+//        binding.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+//                String text = adapterView.getItemAtPosition(position).toString();
+//                //Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
 
         binding.simpanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Boolean infected;
+                Boolean infected = getCurrentStatusUser();
                 String status;
-                if (binding.spinner.getSelectedItem().toString().equals("Positif")) {
-                    infected = true;
-                    status = "Positif";
-                } else if (binding.spinner.getSelectedItem().toString().equals("Negatif")) {
-                    infected = false;
+                if (infected == true) {
+                    status = "Positif COVID-19";
+                } else if (infected == false) {
                     status = "Negatif";
                 } else {
                     infected = null;
@@ -195,8 +199,7 @@ public class UserDataFragment extends Fragment {
                         binding.inputNama.getText().toString().trim(),
                         binding.inputEmail.getText().toString().trim(),
                         binding.inputPrivateKey.getText().toString().trim(),
-                        infected,
-                        uriPictureTestResult.toString()
+                        infected
                         //binding.inputPasswordGmail.getText().toString().trim()
                 );
                 saveUserData(data);
@@ -212,8 +215,10 @@ public class UserDataFragment extends Fragment {
                     binding.tvUserData.setText(
                             "Halo " + userData.name +
                                     "\n\nEmail: " + userData.email +
-                                    "\n\nPrivate Key Wallet: " + userData._walletAddress +
+                                    "\n\nPrivate Key Wallet: " + userData.privateKey +
                                     "\n\nStatus: "+ status);
+                    binding.tvHasilStatusTerinfeksi.setVisibility(View.INVISIBLE);
+                    binding.payCovidTestResult.setVisibility(View.VISIBLE);
 
                 } else if (userData == null) {
                     binding.tvUserData.setVisibility(View.INVISIBLE);
@@ -226,8 +231,8 @@ public class UserDataFragment extends Fragment {
                 binding.tvInputStatusTerinfeksi.setVisibility(View.INVISIBLE);
 
                 binding.simpanButton.setVisibility(View.INVISIBLE);
-                binding.spinner.setVisibility(View.INVISIBLE);
-                binding.imageViewTestResult.setVisibility(View.VISIBLE);
+//                binding.spinner.setVisibility(View.INVISIBLE);
+//                binding.imageViewTestResult.setVisibility(View.VISIBLE);
                 binding.addCovidTestResult.setVisibility(View.INVISIBLE);
                 binding.backButton.setVisibility(View.VISIBLE);
                 binding.backButton.setText("Input Data");
@@ -239,12 +244,12 @@ public class UserDataFragment extends Fragment {
             public void onClick(View view) {
                 if (Hide == false) {
                     Hide = true;
-
+                    Boolean infected = getCurrentStatusUser();
                     String status;
-                    if (userData.infected = true) {
+                    if (infected == true) {
 
-                        status = "Positif";
-                    } else if (userData.infected = false) {
+                        status = "Positif COVID-19";
+                    } else if (infected == false) {
 
                         status = "Negatif";
                     } else {
@@ -260,8 +265,10 @@ public class UserDataFragment extends Fragment {
                         binding.tvUserData.setText(
                                 "Nama User = " + userData.name +
                                         "\n\nEmail User = " + userData.email +
-                                        "\n\nWallet User = " + userData._walletAddress +
+                                        "\n\nWallet User = " + userData.privateKey +
                                         "\n\nStatus: " + status);
+                        binding.tvHasilStatusTerinfeksi.setVisibility(View.VISIBLE);
+                        binding.payCovidTestResult.setVisibility(View.VISIBLE);
                     } else if (userData == null) {
                         binding.tvUserData.setVisibility(View.INVISIBLE);
 
@@ -271,9 +278,9 @@ public class UserDataFragment extends Fragment {
                     binding.inputPrivateKey.setVisibility(View.INVISIBLE);
                   //  binding.inputPasswordGmail.setVisibility(View.INVISIBLE);
                     binding.tvInputStatusTerinfeksi.setVisibility(View.INVISIBLE);
-
+                    binding.tvHasilStatusTerinfeksi.setVisibility(View.INVISIBLE);
                     binding.simpanButton.setVisibility(View.INVISIBLE);
-                    binding.spinner.setVisibility(View.INVISIBLE);
+//                    binding.spinner.setVisibility(View.INVISIBLE);
 
                     binding.addCovidTestResult.setVisibility(View.INVISIBLE);
                     binding.backButton.setVisibility(View.VISIBLE);
@@ -288,17 +295,59 @@ public class UserDataFragment extends Fragment {
                   //  binding.inputPasswordGmail.setVisibility(View.VISIBLE);
                     binding.tvInputStatusTerinfeksi.setVisibility(View.VISIBLE);
 
-                    binding.spinner.setVisibility(View.VISIBLE);
+//                    binding.spinner.setVisibility(View.VISIBLE);
                     binding.backButton.setVisibility(View.VISIBLE);
                     binding.simpanButton.setVisibility(View.VISIBLE);
-                    binding.spinner.setVisibility(View.VISIBLE);
+//                    binding.spinner.setVisibility(View.VISIBLE);
                     binding.addCovidTestResult.setVisibility(View.VISIBLE);
                     binding.backButton.setText("Back");
                 }
             }
         });
 
+        binding.addCovidTestResult.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Boolean currentStatusUser = getCurrentStatusUser();
+                if(currentStatusUser == true){
+                    binding.tvHasilStatusTerinfeksi.setVisibility(View.VISIBLE);
+                    binding.tvHasilStatusTerinfeksi.setText("Positif COVID-19");
+                }
+                else{
+                    binding.tvHasilStatusTerinfeksi.setVisibility(View.VISIBLE);
+                    binding.tvHasilStatusTerinfeksi.setText("Negatif COVID-19");
+                }
+            }
+        });
+
         return binding.getRoot();
+    }
+
+    public Boolean getCurrentStatusUser(){
+        Log.d(TAG, "getCurrentStatusUser()");
+        Boolean currentStatusUser = false;
+        final Web3j web3j = Web3j.build(
+                new HttpService(
+                        "https://rinkeby.infura.io/v3/d9100bd917c6448695785e26e5f0a095"
+                )
+        );
+        //0x342673B9B479e8FFfcd8dE709f89f8EBaE111a1b
+        //0x7530003161c4F2dcA9Ff994144Fa4fCC5a2d57F2
+        String contractAddress = "0x7530003161c4F2dcA9Ff994144Fa4fCC5a2d57F2";
+        String privateKey = "b0e4237d637b1422592a03cca7df3e0ba236f6dc72655d97363b5db29abbb32e";
+
+        Credentials credentials = Credentials.create(privateKey);
+        ContractGasProvider contractGasProvider = new DefaultGasProvider();
+        NewSafeBlock_sol_NewSafeBlock contract = NewSafeBlock_sol_NewSafeBlock.load(contractAddress, web3j, credentials, contractGasProvider);
+        try{
+            Tuple2<String, Boolean> dataCache = contract.checkCurrentUserStatus(binding.inputNama.getText().toString().trim()).sendAsync().get();
+            User user = new User(dataCache.component1(),dataCache.component2());
+            currentStatusUser = user.status;
+        }catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+
+        return currentStatusUser;
     }
 
     @Override
@@ -308,7 +357,7 @@ public class UserDataFragment extends Fragment {
             if (requestCode == GALLERY_REQ_CODE) {
                 uriPictureTestResult = data.getData();
 
-                binding.imageViewTestResult.setImageURI(data.getData());
+//                binding.imageViewTestResult.setImageURI(data.getData());
             }
         }
 
