@@ -21,7 +21,7 @@ public class LoginDokterActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginDokterActivity";
     ActivityLoginDokterBinding binding;
-    public final String contractAddress = "0xBb5a99B6B526671FE500e48FFf99aFCfFa88EBb3";
+    public final String contractAddress = "0x938A5FA7b18699D656FF37f89358DB9ce8dD549C";
 
 
     @Override
@@ -71,7 +71,7 @@ public class LoginDokterActivity extends AppCompatActivity {
                         if (loginDokterStatus == true) {
 
 
-                            Intent intent = new Intent(LoginDokterActivity.this, AdminModeActivity.class);
+                            Intent intent = new Intent(LoginDokterActivity.this, DokterModeActivity.class);
                             Dokter dokter = new Dokter(name, address, password, privateKey);
                             intent.putExtra("dokter", dokter);
                             startActivity(intent);
@@ -110,7 +110,7 @@ public class LoginDokterActivity extends AppCompatActivity {
 
         Credentials credentials = Credentials.create(privateKey);
         ContractGasProvider contractGasProvider = new DefaultGasProvider();
-        SmartContractBaru_sol_SmartContractBaruTest contract = SmartContractBaru_sol_SmartContractBaruTest.load(contractAddress, web3j, credentials, contractGasProvider);
+        SmartContractBaru_sol_SmartContractBaru contract = SmartContractBaru_sol_SmartContractBaru.load(contractAddress, web3j, credentials, contractGasProvider);
         try {
             checkAddress = contract.verifyDoctor(address, name).sendAsync().get();
             if (checkAddress == true) {

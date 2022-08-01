@@ -41,24 +41,24 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.169" />
 
-    <TextView
-        android:id="@+id/tv_seeListAdmin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Lihat List Dokter Terdaftar"
-        android:textAllCaps="false"
-        android:textColor="#0000FF"
-        android:textSize="14sp"
+<!--    <TextView-->
+<!--        android:id="@+id/tv_seeListAdmin"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:text="Lihat List Dokter Terdaftar"-->
+<!--        android:textAllCaps="false"-->
+<!--        android:textColor="#0000FF"-->
+<!--        android:textSize="14sp"-->
 
-        android:textStyle="bold"
+<!--        android:textStyle="bold"-->
 
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.846"
-        app:layout_constraintStart_toEndOf="@+id/tv_InputAdmin"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.173" />
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.846"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/tv_InputAdmin"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.173" />-->
 
     <com.rengwuxian.materialedittext.MaterialEditText
         android:id="@+id/input_namaAdmin"

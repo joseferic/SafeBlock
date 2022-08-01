@@ -24,7 +24,7 @@ public class ListDokterActivity extends AppCompatActivity {
 
     public List<Dokter> listDokterNow;
     private static final String TAG = "ListDokterActivity";
-    public final String contractAddress = "0xBb5a99B6B526671FE500e48FFf99aFCfFa88EBb3";
+    public final String contractAddress = "0x938A5FA7b18699D656FF37f89358DB9ce8dD549C";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +86,7 @@ public class ListDokterActivity extends AppCompatActivity {
 
         Credentials credentials = Credentials.create(privateKey);
         ContractGasProvider contractGasProvider = new DefaultGasProvider();
-        SmartContractBaru_sol_SmartContractBaruTest contract = SmartContractBaru_sol_SmartContractBaruTest.load(contractAddress, web3j, credentials, contractGasProvider);
+        SmartContractBaru_sol_SmartContractBaru contract = SmartContractBaru_sol_SmartContractBaru.load(contractAddress, web3j, credentials, contractGasProvider);
         try{
             Log.v("Data Dokter length list", contract.getAddressDoctorArrayLength().sendAsync().get().toString());
             Integer list_length = Integer.valueOf(contract.getAddressDoctorArrayLength().sendAsync().get().toString());

@@ -21,17 +21,25 @@
         android:theme="@style/ThemeSafeBlock"
         android:windowSoftInputMode="adjustPan">
         <activity
+            android:name=".DetailTestCovidTerbayarActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ConfirmTestDataActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".InputDataTestCovidActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
-            android:name=".PayCovidTestActivity"
-            android:exported="false" />
-        <activity
-            android:name=".AdminModeActivity"
-            android:exported="false" />
+            android:name=".DokterModeActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".LoginDokterActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ChooseModeActivity"
             android:exported="true"
@@ -44,7 +52,8 @@
         </activity>
         <activity
             android:name=".ListDokterActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".SignupDokterActivity"
             android:exported="false"

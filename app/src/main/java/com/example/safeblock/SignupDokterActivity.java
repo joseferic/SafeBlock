@@ -20,7 +20,7 @@ public class SignupDokterActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginDeveloperActivity";
     private ActivitySignupDokterBinding binding;
-    public final String contractAddress = "0xBb5a99B6B526671FE500e48FFf99aFCfFa88EBb3";
+    public final String contractAddress = "0x938A5FA7b18699D656FF37f89358DB9ce8dD549C";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,13 +77,13 @@ public class SignupDokterActivity extends AppCompatActivity {
             }
         });
 
-        binding.tvSeeListAdmin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(SignupDokterActivity.this, ListDokterActivity.class);
-                startActivity(intent);
-            }
-        });
+//        binding.tvSeeListAdmin.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(SignupDokterActivity.this, ListDokterActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
         binding.tvLoginDokter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +107,7 @@ public class SignupDokterActivity extends AppCompatActivity {
 
         Credentials credentials = Credentials.create(privateKey);
         ContractGasProvider contractGasProvider = new DefaultGasProvider();
-        SmartContractBaru_sol_SmartContractBaruTest contract = SmartContractBaru_sol_SmartContractBaruTest.load(contractAddress, web3j, credentials, contractGasProvider);
+        SmartContractBaru_sol_SmartContractBaru contract = SmartContractBaru_sol_SmartContractBaru.load(contractAddress, web3j, credentials, contractGasProvider);
         try{
             checkAddress = contract.verifyDoctor(address,name).sendAsync().get();
             if(checkAddress == true) {

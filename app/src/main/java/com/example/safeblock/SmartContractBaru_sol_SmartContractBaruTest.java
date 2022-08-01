@@ -42,7 +42,7 @@ public class SmartContractBaru_sol_SmartContractBaruTest extends Contract {
 
     public static final String FUNC_CREATEDOCTORACCOUNT = "createDoctorAccount";
 
-    public static final String FUNC_CREATETESTCOVID = "createTestCovid";
+    public static final String FUNC_CREATETESTCOVID = "createTestCovidData";
 
     public static final String FUNC_CREATEUSERDATA = "createUserData";
 

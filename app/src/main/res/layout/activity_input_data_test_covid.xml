@@ -4,30 +4,100 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".InputDataTestCovidActivity">
 
     <TextView
-        android:id="@+id/tv_data"
+        android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:text="Data Intent"
-        android:textAlignment="textStart"
+        android:layout_gravity="center"
+        android:text="Data tes covid"
+        android:textAllCaps="true"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="36sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintVertical_bias="0.056" />
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/tv_data"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="80dp"-->
+    <!--        android:padding="5dp"-->
+    <!--        android:text="Data Intent"-->
+    <!--        android:textAlignment="textStart"-->
+    <!--        android:textColor="@color/black"-->
+    <!--        android:textSize="20sp"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.5"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/tv_title" />-->
+
+
+    <TextView
+        android:id="@+id/tv_inputStatusTerinfeksi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="96dp"
+        android:text="Jenis Tes Covid"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="96dp"
+        android:textSize="30sp"
+        android:background="#FDE6E4"
+        android:popupBackground="#FDE6E4"
+        app:layout_constraintStart_toEndOf="@+id/tv_inputStatusTerinfeksi"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/input_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tanggal"
+        android:inputType="text"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_inputStatusTerinfeksi"
+        app:layout_constraintVertical_bias="0.082"
+        app:met_floatingLabel="highlight" />
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/input_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:hint="Jam"
+        android:inputType="text"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_date"
+        app:met_floatingLabel="highlight" />
 
     <Button
-        android:id="@+id/button_payDoctor"
+        android:id="@+id/button_confirmTesTCovidData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/black"
-        android:text="Bayar Dokter"
+        android:text="Konfirmasi Data"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

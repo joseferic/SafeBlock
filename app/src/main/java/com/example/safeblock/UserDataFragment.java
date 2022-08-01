@@ -155,9 +155,9 @@ public class UserDataFragment extends Fragment {
             Toast.makeText(getContext(), "stateDataSaved = null", Toast.LENGTH_LONG).show();
         }
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-                R.array.TrueOrFalse, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+//                R.array.TrueOrFalse, android.R.layout.simple_spinner_item);
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //        binding.spinner.setAdapter(adapter);
 //        binding.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 //            @Override

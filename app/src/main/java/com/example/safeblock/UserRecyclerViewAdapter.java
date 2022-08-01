@@ -32,11 +32,11 @@ import java.util.List;
 public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerViewAdapter.MyViewHolder> {
 
     Context context;
-    List<User> data;
+    List<TestCovid> data;
     Dialog dialog;
     String privateKeyAdmin;
 
-    public UserRecyclerViewAdapter(Context mContenxt, List<User> mData,String privateKeyAdmin) {
+    public UserRecyclerViewAdapter(Context mContenxt, List<TestCovid> mData,String privateKeyAdmin) {
         this.context = mContenxt;
         this.data = mData;
         this.privateKeyAdmin = privateKeyAdmin;
@@ -63,8 +63,8 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
                 Button dialog_button_sendEmail = dialog.findViewById(R.id.button_notifiy_other_user);
 
                 Log.d("Data List = ", data.get(viewHolder.getAdapterPosition()).toString());
-                dialog_place_name.setText(data.get(viewHolder.getAdapterPosition()).name);
-                if(!(data.get(viewHolder.getAdapterPosition()).status)){
+                dialog_place_name.setText(data.get(viewHolder.getAdapterPosition()).patientName);
+                if(!(data.get(viewHolder.getAdapterPosition()).resultTest)){
                     dialog_place_address.setText("Negatif COVID-19");
                 }
                 else {
@@ -75,7 +75,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
                 dialog_button_changeUserStatus.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        changeStateUser(data.get(viewHolder.getAdapterPosition()).name,data.get(viewHolder.getAdapterPosition()).status);
+                        changeStateUser(data.get(viewHolder.getAdapterPosition()).patientName,data.get(viewHolder.getAdapterPosition()).resultTest);
                     }
                 });
                 dialog.show();
@@ -144,9 +144,9 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.tv_adminName.setText(data.get(position).name);
+        holder.tv_adminName.setText(data.get(position).patientName);
         //holder.tv_date.setText(data.get(position).time_visited);
-        if(data.get(position).status == false){
+        if(data.get(position).resultTest == false){
 
             holder.tv_statusUser.setText("Negatif COVID-19");
         }
